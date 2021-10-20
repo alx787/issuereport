@@ -5,11 +5,10 @@ import net.java.ao.Entity;
 import net.java.ao.Mutator;
 import net.java.ao.OneToMany;
 import net.java.ao.schema.Default;
-import net.java.ao.schema.NotNull;
 import net.java.ao.schema.Table;
 
 @Table("Reporttasks")
-public interface ReportTasks extends Entity {
+public interface ReportTask extends Entity {
 
     @Accessor("Filterstring")
 //    @NotNull
@@ -29,6 +28,15 @@ public interface ReportTasks extends Entity {
     @Default("")
     public void setShedTime(String ShedTime);
 
+    @Accessor("Isactive")
+    @Default("false")
+    public boolean getIsActive();
+
+    @Mutator("Isactive")
+    @Default("false")
+    public void setIsActive(boolean isActive);
+
+
     @OneToMany
-    public Receivers[] getReceivers();
+    public Receiver[] getReceivers();
 }

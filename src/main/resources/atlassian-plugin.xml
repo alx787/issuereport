@@ -23,7 +23,7 @@
 
     <ao key="ao-module">
         <description>The AO module for this plugin.</description>
-        <entity>ru.segezhagroup.alx.ao.ReportTasks</entity>
-        <entity>ru.segezhagroup.alx.ao.Receivers</entity>
+        <entity>ru.segezhagroup.alx.ao.ReportTask</entity>
+        <entity>ru.segezhagroup.alx.ao.Receiver</entity>
     </ao>
 </atlassian-plugin>

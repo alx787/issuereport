@@ -4,16 +4,15 @@ import net.java.ao.Accessor;
 import net.java.ao.Entity;
 import net.java.ao.Mutator;
 import net.java.ao.schema.Default;
-import net.java.ao.schema.NotNull;
 import net.java.ao.schema.Table;
 
 //https://developer.atlassian.com/server/framework/atlassian-sdk/onetomany-relationship/
 
-@Table("Receivers")
-public interface Receivers extends Entity {
+@Table("Receiver")
+public interface Receiver extends Entity {
 
-    public ReportTasks getReportTask();
-    public void setReportTask(ReportTasks reportTask);
+    public ReportTask getReportTask();
+    public void setReportTask(ReportTask reportTask);
 
     @Accessor("Userkey")
     @Default("")

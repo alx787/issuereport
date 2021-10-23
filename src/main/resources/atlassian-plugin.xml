@@ -1,29 +1,29 @@
-<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">images/pluginIcon.png</param>
-        <param name="plugin-logo">images/pluginLogo.png</param>
-    </plugin-info>
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="issuereport"/>
-    
-    <!-- add our web resources -->
-    <web-resource key="issuereport-resources" name="issuereport Web Resources">
-        <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="issuereport.css" location="/css/issuereport.css"/>
-        <resource type="download" name="issuereport.js" location="/js/issuereport.js"/>
-        <resource type="download" name="images/" location="/images"/>
-
-        <context>issuereport</context>
-    </web-resource>
-
-    <ao key="ao-module">
-        <description>The AO module for this plugin.</description>
-        <entity>ru.segezhagroup.alx.ao.ReportTask</entity>
-        <entity>ru.segezhagroup.alx.ao.Receiver</entity>
-    </ao>
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2"> 
+  <plugin-info> 
+    <description>${project.description}</description>  
+    <version>${project.version}</version>  
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>  
+    <param name="plugin-icon">images/pluginIcon.png</param>  
+    <param name="plugin-logo">images/pluginLogo.png</param> 
+  </plugin-info>  
+  <!-- add our i18n resource -->  
+  <resource type="i18n" name="i18n" location="issuereport"/>  
+  <!-- add our web resources -->  
+  <web-resource key="issuereport-resources" name="issuereport Web Resources"> 
+    <dependency>com.atlassian.auiplugin:ajs</dependency>  
+    <resource type="download" name="issuereport.css" location="/css/issuereport.css"/>  
+    <resource type="download" name="issuereport.js" location="/js/issuereport.js"/>  
+    <resource type="download" name="images/" location="/images"/>  
+    <context>issuereport</context> 
+  </web-resource>  
+  <ao key="ao-module"> 
+    <description>The AO module for this plugin.</description>  
+    <entity>ru.segezhagroup.alx.ao.ReportTask</entity>  
+    <entity>ru.segezhagroup.alx.ao.Receiver</entity> 
+  </ao>  
+  <rest name="Tasks Rest" i18n-name-key="tasks-rest.name" key="tasks-rest" path="/issuereport" version="1.0">
+    <description key="tasks-rest.description">The Tasks Rest Plugin</description> 
+  </rest>
 </atlassian-plugin>

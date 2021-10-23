@@ -5,20 +5,21 @@ import com.atlassian.activeobjects.tx.Transactional;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import net.java.ao.DBParam;
 import net.java.ao.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Component;
 
-//import javax.inject.Named;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 @Transactional
-@Component
+@Named
 public class ReportTaskDaoImpl implements ReportTaskDao {
 
     @ComponentImport
     private final ActiveObjects ao;
 
-    @Autowired
-    public ReportTaskDaoImpl(ActiveObjects ao) {
+    @Inject
+    public ReportTaskDaoImpl(@ComponentImport ActiveObjects ao) {
         this.ao = ao;
     }
 
@@ -33,9 +34,10 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
     }
 
     @Override
-    public ReportTask create(String filterString, String shedTime, boolean isActive) {
+    public ReportTask create(String name, String filterString, String shedTime, boolean isActive) {
 
         final ReportTask reportTask = ao.create(ReportTask.class,
+                new DBParam("NAME", name),
                 new DBParam("FILTERSTRING", filterString),
                 new DBParam("SHEDTIME", shedTime),
                 new DBParam("ISACTIVE", isActive)

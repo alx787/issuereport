@@ -10,30 +10,38 @@ import net.java.ao.schema.Table;
 @Table("Reporttasks")
 public interface ReportTask extends Entity {
 
-    @Accessor("Filterstring")
+//    @Accessor("Name")
+//    @Default("")
+    public String getName();
+
+//    @Mutator("Name")
+//    @Default("")
+    public void setName(String name);
+
+//    @Accessor("Filterstring")
 //    @NotNull
-    @Default("")
+//    @Default("")
     public String getFilterString();
 
-    @Mutator("Filterstring")
+//    @Mutator("Filterstring")
 //    @NotNull
-    @Default("")
+//    @Default("")
     public void setFilterString(String filterString);
 
-    @Accessor("Shedtime")
-    @Default("")
+//    @Accessor("Shedtime")
+//    @Default("")
     public String getShedTime();
 
-    @Mutator("Shedtime")
-    @Default("")
+//    @Mutator("Shedtime")
+//    @Default("")
     public void setShedTime(String ShedTime);
 
-    @Accessor("Isactive")
-    @Default("false")
+//    @Accessor("Isactive")
+//    @Default("false")
     public boolean getIsActive();
 
-    @Mutator("Isactive")
-    @Default("false")
+//    @Mutator("Isactive")
+//    @Default("false")
     public void setIsActive(boolean isActive);
 
 

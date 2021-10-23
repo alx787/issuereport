@@ -7,15 +7,18 @@ import net.java.ao.DBParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 @Transactional
-@Component
+@Named
 public class ReceiverDaoImpl implements ReceiverDao{
 
     @ComponentImport
     private final ActiveObjects ao;
 
-    @Autowired
-    public ReceiverDaoImpl(ActiveObjects ao) {
+    @Inject
+    public ReceiverDaoImpl(@ComponentImport ActiveObjects ao) {
         this.ao = ao;
     }
 

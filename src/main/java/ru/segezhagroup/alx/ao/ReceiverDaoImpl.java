@@ -18,7 +18,7 @@ public class ReceiverDaoImpl implements ReceiverDao{
     private final ActiveObjects ao;
 
     @Inject
-    public ReceiverDaoImpl(@ComponentImport ActiveObjects ao) {
+    public ReceiverDaoImpl(ActiveObjects ao) {
         this.ao = ao;
     }
 
@@ -39,6 +39,14 @@ public class ReceiverDaoImpl implements ReceiverDao{
         receiver.save();
 
         return receiver;
+    }
+
+    @Override
+    public void removeFromTask(ReportTask reportTask) {
+        Receiver[] receivers = reportTask.getReceivers();
+        for (Receiver receiver : receivers) {
+            ao.delete(receiver);
+        }
     }
 
     @Override

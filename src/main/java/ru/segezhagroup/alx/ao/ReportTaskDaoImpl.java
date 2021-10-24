@@ -19,7 +19,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
     private final ActiveObjects ao;
 
     @Inject
-    public ReportTaskDaoImpl(@ComponentImport ActiveObjects ao) {
+    public ReportTaskDaoImpl(ActiveObjects ao) {
         this.ao = ao;
     }
 
@@ -36,14 +36,21 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
     @Override
     public ReportTask create(String name, String filterString, String shedTime, boolean isActive) {
 
-        final ReportTask reportTask = ao.create(ReportTask.class,
-                new DBParam("NAME", name),
-                new DBParam("FILTERSTRING", filterString),
-                new DBParam("SHEDTIME", shedTime),
-                new DBParam("ISACTIVE", isActive)
-        );
+//        final ReportTask reportTask = ao.create(ReportTask.class,
+//                new DBParam("NAME", name),
+//                new DBParam("FILTER_STRING", filterString),
+//                new DBParam("SHED_TIME", shedTime),
+//                new DBParam("IS_ACTIVE", isActive)
+//        );
 
+        final ReportTask reportTask = ao.create(ReportTask.class);
+        reportTask.setName(name);
+        reportTask.setFilterString(filterString);
+        reportTask.setShedTime(shedTime);
+        reportTask.setIsActive(isActive);
         reportTask.save();
+
+         reportTask.save();
 
         return reportTask;
     }

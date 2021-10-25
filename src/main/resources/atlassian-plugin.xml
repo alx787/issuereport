@@ -23,7 +23,24 @@
     <entity>ru.segezhagroup.alx.ao.ReportTask</entity>  
     <entity>ru.segezhagroup.alx.ao.Receiver</entity> 
   </ao>  
-  <rest name="Tasks Rest" i18n-name-key="tasks-rest.name" key="tasks-rest" path="/issuereport" version="1.0">
+  <rest name="Tasks Rest" i18n-name-key="tasks-rest.name" key="tasks-rest" path="/issuereport" version="1.0"> 
     <description key="tasks-rest.description">The Tasks Rest Plugin</description> 
-  </rest>
+  </rest>  
+  <web-section name="setup issuereport" i18n-name-key="setup-issuereport.name" key="setup-issuereport" location="admin_plugins_menu" weight="1000"> 
+    <description key="setup-issuereport.description">The setup-issuereport Plugin</description>  
+    <label key="setup-issuereport.label"/> 
+  </web-section>  
+  <web-item name="setup issuereport link" i18n-name-key="setup-issuereport-link.name" key="setup-issuereport-link" section="admin_plugins_menu/setup-issuereport" weight="1000"> 
+    <description key="setup-issuereport-link.description">The setup-issuereport-link Plugin</description>  
+    <label key="setup-issuereport-link.label"/>  
+    <link linkId="setup-issuereport-link-link">/secure/SetupIssueReportPlugin!default.jspa</link> 
+  </web-item>  
+  <webwork1 key="setup-issuereport-web-plugin" name="setup issuereport web plugin" i18n-name-key="setup-issuereport-web-plugin.name">
+    <description key="setup-issuereport-web-plugin.description">The setup issuereport web plugin Plugin</description>
+    <actions> 
+      <action name="ru.segezhagroup.alx.webwork.SetupIssueReportPlugin" alias="SetupIssueReportPlugin">
+        <view name="success">/templates/setup-issuereport-web-plugin/myactionclass/success.vm</view> 
+      </action> 
+    </actions> 
+  </webwork1>
 </atlassian-plugin>

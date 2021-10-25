@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <meta name="decorator" content="atl.admin"/>
+        <meta name="admin.active.section" content="admin_plugins_menu/setup-issuereport"/>
+    ##    $webResourceManager.requireResource("com.atlassian.auiplugin:aui-buttons")
+    ##    $webResourceManager.requireResourcesForContext("com.atlassian.auiplugin:message")
+    ##    $webResourceManager.requireResourcesForContext("custui")
+    </head>
+
+    <body>
+        <h1>success.vm</h1>
+    </body>
+
+</html>

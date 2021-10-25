@@ -36,9 +36,9 @@
             <scope>test</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.atlassian.plugins</groupId>-->
-            <!--<artifactId>atlassian-plugins-osgi-javaconfig</artifactId>-->
-            <!--<version>${osgi.javaconfig.version}</version>-->
+        <!--<groupId>com.atlassian.plugins</groupId>-->
+        <!--<artifactId>atlassian-plugins-osgi-javaconfig</artifactId>-->
+        <!--<version>${osgi.javaconfig.version}</version>-->
         <!--</dependency>-->
         <!-- OSGi Java Config dependencies -->
         <dependency>
@@ -147,6 +147,18 @@
             <version>1.8.5</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.6</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -183,7 +195,6 @@
                     </instructions>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>com.atlassian.plugin</groupId>
                 <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
@@ -206,8 +217,6 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
-
-
         </plugins>
     </build>
     <properties>

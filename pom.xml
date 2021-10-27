@@ -169,6 +169,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <allowGoogleTracking>false</allowGoogleTracking>
+                    <jvmArgs>-Datlassian.mail.senddisabled=false</jvmArgs>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
                     <!-- Uncomment to install TestKit backdoor in JIRA. -->

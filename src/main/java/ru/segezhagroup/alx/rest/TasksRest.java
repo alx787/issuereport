@@ -8,6 +8,7 @@ import ru.segezhagroup.alx.ao.Receiver;
 import ru.segezhagroup.alx.ao.ReceiverDao;
 import ru.segezhagroup.alx.ao.ReportTask;
 import ru.segezhagroup.alx.ao.ReportTaskDao;
+import ru.segezhagroup.alx.tools.MailSender;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -284,7 +285,6 @@ public class TasksRest {
 
         }
 
-
         ReportTask reportTask = reportTaskDao.findById(intTaskId);
         if (reportTask == null) {
             return Response.ok("{\"status\":\"error\", \"description\":\"cant find task\"}").build();
@@ -296,6 +296,13 @@ public class TasksRest {
         reportTaskDao.remove(reportTask);
 
         return Response.ok("{\"status\":\"ok\", \"description\":\"task deleted\"}").build();
-
     }
+
+    @GET
+    @Path("/testmail")
+    public Response testMailSend() {
+        MailSender.sendEmail("test@asd.ru", "test subject", "test body");
+        return Response.ok("[]").build();
+    }
+
 }

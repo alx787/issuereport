@@ -12,90 +12,118 @@
     </head>
 
     <body class="aui">
-        <h2>Настройка расписаний отчетов</h2>
+        <h2>Настройка отчетов</h2>
 
-        <div class="aui-buttons" style="margin: 16px 0 0 0;">
-            <button class="aui-button">Добавить расписание</button>
-        </div>
+        <form class="aui">
+            <h3>Расписание планировщика</h3>
 
-        <table class="aui">
-            <thead>
-                <tr>
-                    <th id="basic-number">#</th>
-                    <th id="basic-name">Отчет</th>
-                    <th id="basic-users">Пользователи</th>
-                    <th id="basic-sheds">Расписание</th>
-                    <th id="basic-active">Включено</th>
-                    <th id="basic-edit"></th>
-                    <th id="basic-test"></th>
-                    <th id="basic-del"></th>
-                </tr>
-                </thead>
-                <tbody>
+            <div class="field-group" style="margin: 20px 0 0 0;">
+                <label for="curr-shed"></label>
+                <input class="text large-field" style="font-size: 22px;" type="text" id="curr-shed" name="curr-shed" value="0 17 12 * * ?" readonly>
+            </div>
 
-                <tr>
-                    <td headers="basic-number">1</td>
-                    <td headers="basic-name">Тестовый отчет</td>
-                    <td headers="basic-users">user1@xx.com user2@xx.com</td>
-                    <td headers="basic-sheds">0 0 0 1 1/3 *</td>
-                    <td headers="basic-active">
-                        <aui-toggle id="change-active"></aui-toggle>
-                    </td>
-                    <td headers="basic-edit">
-                        <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
-                    </td>
-                    <td headers="basic-test">
-                        <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
-                    </td>
-                    <td headers="basic-del">
-                        <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
-                    </td>
-                </tr>
-                <tr>
+            <div class="field-group">
+                <label for="new-shed">Введите новое расписание
+                    <span class="aui-icon icon-required">(required)</span></label>
+                <input class="text large-field" type="text" id="new-shed" name="new-shed" placeholder="* * * * *">
+                <div class="description">0 17 12 * * ? - ежедневно в 12.17</div>
+            </div>
+            <div class="buttons-container">
+                <div class="buttons">
+                    <a class="cancel" style="background-color: #ebedf0" href="#">Сохранить</a>
+                </div>
+            </div>
+        </form>
 
-                <tr>
-                    <td headers="basic-number">2</td>
-                    <td headers="basic-name">Тестовый отчет</td>
-                    <td headers="basic-users">user1@xx.com user2@xx.com</td>
-                    <td headers="basic-sheds">0 0 0 1 1/3 *</td>
-                    <td headers="basic-active">
-                        <aui-toggle id="change-active"></aui-toggle>
-                    </td>
-                    <td headers="basic-edit">
-                        <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
-                    </td>
-                    <td headers="basic-test">
-                        <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
-                    </td>
-                    <td headers="basic-del">
-                        <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
-                    </td>
-                </tr>
-                <tr>
 
-                <tr>
-                    <td headers="basic-number">3</td>
-                    <td headers="basic-name">Тестовый отчет</td>
-                    <td headers="basic-users">user1@xx.com user2@xx.com</td>
-                    <td headers="basic-sheds">0 0 0 1 1/3 *</td>
-                    <td headers="basic-active">
-                        <aui-toggle id="change-active"></aui-toggle>
-                    </td>
-                    <td headers="basic-edit">
-                        <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
-                    </td>
-                    <td headers="basic-test">
-                        <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
-                    </td>
-                    <td headers="basic-del">
-                        <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
-                    </td>
-                </tr>
-                <tr>
 
-            </tbody>
-        </table>
 
+        <form class="aui">
+            <h3>Запланированные отчеты</h3>
+
+
+            <div class="aui-buttons" style="margin: 16px 0 0 0;">
+                <button class="aui-button">Добавить отчет</button>
+            </div>
+
+            <table class="aui">
+                <thead>
+                    <tr>
+                        <th id="basic-number">#</th>
+                        <th id="basic-name">Отчет</th>
+                        <th id="basic-users">Пользователи</th>
+                        <th id="basic-sheds">Время формирования</th>
+                        <th id="basic-active">Включено</th>
+                        <th id="basic-edit"></th>
+                        <th id="basic-test"></th>
+                        <th id="basic-del"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td headers="basic-number">1</td>
+                        <td headers="basic-name">Тестовый отчет</td>
+                        <td headers="basic-users">user1@xx.com user2@xx.com</td>
+                        <td headers="basic-sheds">0 0 0 1 1/3 *</td>
+                        <td headers="basic-active">
+                            <aui-toggle id="change-active"></aui-toggle>
+                        </td>
+                        <td headers="basic-edit">
+                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
+                        </td>
+                        <td headers="basic-test">
+                            <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
+                        </td>
+                        <td headers="basic-del">
+                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                    <tr>
+                        <td headers="basic-number">2</td>
+                        <td headers="basic-name">Тестовый отчет</td>
+                        <td headers="basic-users">user1@xx.com user2@xx.com</td>
+                        <td headers="basic-sheds">0 0 0 1 1/3 *</td>
+                        <td headers="basic-active">
+                            <aui-toggle id="change-active"></aui-toggle>
+                        </td>
+                        <td headers="basic-edit">
+                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
+                        </td>
+                        <td headers="basic-test">
+                            <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
+                        </td>
+                        <td headers="basic-del">
+                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                    <tr>
+                        <td headers="basic-number">3</td>
+                        <td headers="basic-name">Тестовый отчет</td>
+                        <td headers="basic-users">user1@xx.com user2@xx.com</td>
+                        <td headers="basic-sheds">0 0 0 1 1/3 *</td>
+                        <td headers="basic-active">
+                            <aui-toggle id="change-active"></aui-toggle>
+                        </td>
+                        <td headers="basic-edit">
+                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
+                        </td>
+                        <td headers="basic-test">
+                            <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
+                        </td>
+                        <td headers="basic-del">
+                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                </tbody>
+            </table>
+        </form>
 
 
     </body>

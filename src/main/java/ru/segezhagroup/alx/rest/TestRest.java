@@ -25,7 +25,10 @@ public class TestRest {
     @GET
     @Path("/testmail")
     public Response testMailSend() {
-        MailSender.sendEmail("test@asd.ru", "test subject", "test body");
+
+        String testBody = MailSender.getMailText();
+
+        MailSender.sendEmail("test@asd.ru", "test subject", testBody);
         return Response.ok("[]").build();
     }
 

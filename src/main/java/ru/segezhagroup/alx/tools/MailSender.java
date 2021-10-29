@@ -6,8 +6,12 @@ import com.atlassian.mail.MailFactory;
 import com.atlassian.mail.queue.SingleMailQueueItem;
 import com.atlassian.mail.server.SMTPMailServer;
 
+import com.atlassian.velocity.VelocityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MailSender {
     private static final Logger log = LoggerFactory.getLogger(MailSender.class);
@@ -34,4 +38,47 @@ public class MailSender {
 //        log.warn(emailType + " email was added to the queue ");
         log.warn(" ===== email was added to the queue =====");
     }
+
+
+    public static String getMailText() {
+        String result = "";
+
+        VelocityManager vm = ComponentAccessor.getVelocityManager();
+
+//        CustomField userNameCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(10300L);
+//        CustomField userEmailCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(10302L);
+//
+//        String userName = (String)issue.getCustomFieldValue(userNameCf);
+//        String userEmail = (String)issue.getCustomFieldValue(userEmailCf);
+//
+//        String reporter = "";
+//
+//        if (userName.equals("")) {
+//            userName = null;
+//        }
+//
+//        if (userEmail.equals("")) {
+//            userEmail = null;
+//        }
+//
+//        if (userName != null) {
+//            reporter = userName;
+//        } else {
+//            if (userEmail != null) {
+//                reporter = userEmail;
+//            }
+//        }
+
+        Map params = new HashMap();
+//        params.put("reporter", reporter);
+//        params.put("summary", issue.getSummary());
+//        params.put("description", issue.getDescription());
+//        params.put("assignee", issue.getAssignee().getDisplayName());
+
+        result = vm.getEncodedBody("/templates/", "mail.vm", "UTF-8", params);
+
+        return result;
+
+    }
+
 }

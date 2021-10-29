@@ -26,7 +26,6 @@ public class TasksRest {
     private final ReceiverDao receiverDao;
 
 
-
     @Inject
     public TasksRest(ReportTaskDao reportTaskDao, ReceiverDao receiverDao) {
         this.reportTaskDao = reportTaskDao;
@@ -112,6 +111,8 @@ public class TasksRest {
         jsonTaskObject.addProperty("name", reportTask.getName());
         jsonTaskObject.addProperty("filterstring", reportTask.getFilterString());
         jsonTaskObject.addProperty("active", reportTask.getIsActive());
+        jsonTaskObject.addProperty("userkey", reportTask.getUserKey());
+
 
         JsonArray jsonUserArray = new JsonArray();
 
@@ -159,13 +160,14 @@ public class TasksRest {
         String filterString = jsonInput.get("filterstring").getAsString();
         String shedTime = jsonInput.get("shedtime").getAsString();
         Boolean active = jsonInput.get("active").getAsBoolean();
+        String userKey = jsonInput.get("userkey").getAsString();
 
         // пользователи
         JsonArray jsonUserArray = jsonInput.get("receivers").getAsJsonArray();
 
 
         // создаем задачу
-        ReportTask reportTask = reportTaskDao.create(taskName, filterString, shedTime, active);
+        ReportTask reportTask = reportTaskDao.create(taskName, filterString, shedTime, active, userKey);
 
         if (reportTask == null) {
             return Response.ok("{\"status\":\"error\", \"description\":\"error creating task\"}").build();
@@ -217,6 +219,7 @@ public class TasksRest {
         String filterString = jsonInput.get("filterstring").getAsString();
         String shedTime = jsonInput.get("shedtime").getAsString();
         Boolean active = jsonInput.get("active").getAsBoolean();
+        String userKey = jsonInput.get("userkey").getAsString();
 
         // пользователи
         JsonArray jsonUserArray = jsonInput.get("receivers").getAsJsonArray();
@@ -232,6 +235,7 @@ public class TasksRest {
         reportTask.setFilterString(filterString);
         reportTask.setShedTime(shedTime);
         reportTask.setIsActive(active);
+        reportTask.setUserKey(userKey);
         reportTaskDao.update(reportTask);
 
 
@@ -298,11 +302,6 @@ public class TasksRest {
         return Response.ok("{\"status\":\"ok\", \"description\":\"task deleted\"}").build();
     }
 
-    @GET
-    @Path("/testmail")
-    public Response testMailSend() {
-        MailSender.sendEmail("test@asd.ru", "test subject", "test body");
-        return Response.ok("[]").build();
-    }
+
 
 }

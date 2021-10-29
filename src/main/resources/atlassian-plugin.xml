@@ -25,8 +25,11 @@
   </ao>  
   <rest name="Tasks Rest" i18n-name-key="tasks-rest.name" key="tasks-rest" path="/issuereport" version="1.0"> 
     <description key="tasks-rest.description">The Tasks Rest Plugin</description> 
-  </rest>  
-  <web-section name="setup issuereport" i18n-name-key="setup-issuereport.name" key="setup-issuereport" location="admin_plugins_menu" weight="1000"> 
+  </rest>
+  <rest name="Test Rest" i18n-name-key="test rest" key="test-rest" path="/issuereport" version="1.0">
+    <description key="test-rest">The Test Rest Plugin</description>
+  </rest>
+  <web-section name="setup issuereport" i18n-name-key="setup-issuereport.name" key="setup-issuereport" location="admin_plugins_menu" weight="1000">
     <description key="setup-issuereport.description">The setup-issuereport Plugin</description>  
     <label key="setup-issuereport.label"/> 
   </web-section>  

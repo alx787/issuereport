@@ -1,0 +1,16 @@
+.task-edit-content div {
+    clear: left;
+    padding-top: 5px;
+}
+
+.task-edit-content div label {
+    float: left;
+    width: 160px;
+    line-height: 30px;
+}
+
+.task-edit-content div input {
+    width: 410px;
+    padding: 3px;
+    border: 1px solid #c1c7d0;
+}

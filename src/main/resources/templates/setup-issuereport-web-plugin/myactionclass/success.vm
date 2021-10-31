@@ -7,11 +7,89 @@
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-experimental-iconfont")
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-toggle")
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-buttons")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:dialog2")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:aui-select2")
         $webResourceManager.requireResourcesForContext("issuereport")
 
     </head>
 
     <body class="aui">
+
+
+        <section id="task-edit-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" style="width: 640px;" role="dialog" aria-hidden="true">
+            <header class="aui-dialog2-header">
+                <h2 class="aui-dialog2-header-main">Добавить новый отчет</h2>
+                <a class="aui-dialog2-header-close">
+                    <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
+                </a>
+            </header>
+
+
+
+            <div class="aui-dialog2-content task-edit-content">
+                <form class="aui">
+                    <div>
+                        <label for="editname">Название</label>
+                        <input class="text large-field" id="editname" type="text" name="name">
+                    </div>
+
+                    <div>
+                        <label for="editfilterstring">Запрос</label>
+                        <input class="text large-field" id="editfilterstring" type="text" name="filterstring">
+                    </div>
+
+                    <div>
+                        <label for="editshedtime">Время</label>
+                        <input class="text large-field" id="editshedtime" type="text" name="shedtime">
+                    </div>
+
+                    <div>
+                        <label for="editisactive">Активно</label>
+                        <aui-toggle id="editisactive"></aui-toggle>
+                    </div>
+
+                    <div>
+                        <label for="edituser">Пользователь</label>
+                        <input class="text large-field" id="edituser" type="text" name="user">
+                    </div>
+
+                    <div style="margin-top: 20px">
+                        <label for="receiveruser">Добавить получателя</label>
+                        <input class="text large-field" id="receiveruser" type="text" name="receiveruser">
+                        <button id="add-user-button" class="aui-button aui-button-primary">Добавить</button>
+                    </div>
+
+                    <div>
+                        <label for="receivers">Получатели</label>
+                        <select class="multi-select" size="6" multiple="multiple" id="receivers" name="receivers">
+##                            <option>option one</option>
+##                            <option>option two</option>
+##                            <option>option three</option>
+##                            <option>option four</option>
+##                            <option>option five</option>
+##                            <option>option six</option>
+                        </select>
+                        <button id="remove-user-button" class="aui-button aui-button-primary">Удалить</button>
+                        <button id="clear-user-button" class="aui-button aui-button-primary">Очистить</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <footer class="aui-dialog2-footer">
+                <div class="aui-dialog2-footer-actions">
+                    <button id="edit-submit-button" class="aui-button aui-button-primary">OK</button>
+                    <button id="check-submit-button" class="aui-button aui-button-link">Проверить</button>
+                    <button id="edit-cancel-button" class="aui-button aui-button-link">Отмена</button>
+                </div>
+            </footer>
+        </section>
+
+
+
+
+
         <h2>Настройка отчетов</h2>
 
         <form class="aui">
@@ -30,7 +108,7 @@
             </div>
             <div class="buttons-container">
                 <div class="buttons">
-                    <a class="cancel" style="background-color: #ebedf0" href="#">Сохранить</a>
+                    <a class="aui-button" style="background-color: #ebedf0" href="#">Сохранить</a>
                 </div>
             </div>
         </form>
@@ -43,7 +121,7 @@
 
 
             <div class="aui-buttons" style="margin: 16px 0 0 0;">
-                <button class="aui-button">Добавить отчет</button>
+                <button id="button-add" class="aui-button">Добавить отчет</button>
             </div>
 
             <table class="aui">

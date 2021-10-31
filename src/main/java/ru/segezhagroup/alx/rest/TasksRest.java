@@ -111,7 +111,7 @@ public class TasksRest {
         jsonTaskObject.addProperty("name", reportTask.getName());
         jsonTaskObject.addProperty("filterstring", reportTask.getFilterString());
         jsonTaskObject.addProperty("active", reportTask.getIsActive());
-        jsonTaskObject.addProperty("userkey", reportTask.getUserKey());
+        jsonTaskObject.addProperty("userName", reportTask.getUserName());
 
 
         JsonArray jsonUserArray = new JsonArray();
@@ -219,7 +219,7 @@ public class TasksRest {
         String filterString = jsonInput.get("filterstring").getAsString();
         String shedTime = jsonInput.get("shedtime").getAsString();
         Boolean active = jsonInput.get("active").getAsBoolean();
-        String userKey = jsonInput.get("userkey").getAsString();
+        String userName = jsonInput.get("username").getAsString();
 
         // пользователи
         JsonArray jsonUserArray = jsonInput.get("receivers").getAsJsonArray();
@@ -235,7 +235,7 @@ public class TasksRest {
         reportTask.setFilterString(filterString);
         reportTask.setShedTime(shedTime);
         reportTask.setIsActive(active);
-        reportTask.setUserKey(userKey);
+        reportTask.setUserName(userName);
         reportTaskDao.update(reportTask);
 
 

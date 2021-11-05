@@ -11,14 +11,16 @@
   <!-- add our i18n resource -->  
   <resource type="i18n" name="i18n" location="issuereport"/>  
   <!-- add our web resources -->  
-  <web-resource key="issuereport-resources" name="issuereport Web Resources"> 
-    <dependency>com.atlassian.auiplugin:ajs</dependency>  
-    <resource type="download" name="issuereport.css" location="/css/issuereport.css"/>  
+  <web-resource key="issuereport-resources" name="issuereport Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <data key="web-data" class="ru.segezhagroup.alx.dataprovider.WebDataProvider" />
+    <resource type="download" name="issuereport.css" location="/css/issuereport.css"/>
     <resource type="download" name="issuereport.js" location="/js/issuereport.js"/>  
     <resource type="download" name="images/" location="/images"/>  
     <context>issuereport</context> 
-  </web-resource>  
-  <ao key="ao-module"> 
+  </web-resource>
+
+  <ao key="ao-module">
     <description>The AO module for this plugin.</description>  
     <entity>ru.segezhagroup.alx.ao.ReportTask</entity>  
     <entity>ru.segezhagroup.alx.ao.Receiver</entity> 

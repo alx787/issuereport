@@ -45,8 +45,8 @@ public interface ReportTask extends Entity {
     public void setIsActive(boolean isActive);
 
 
-    public String getUserName();
-    public void setUserName(String userKey);
+    public String getUserKey();
+    public void setUserKey(String userKey);
 
 
     @OneToMany

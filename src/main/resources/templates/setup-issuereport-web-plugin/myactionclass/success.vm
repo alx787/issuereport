@@ -9,12 +9,16 @@
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-buttons")
         $webResourceManager.requireResource("com.atlassian.auiplugin:dialog2")
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-select2")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:aui-flag")
         $webResourceManager.requireResourcesForContext("issuereport")
 
     </head>
 
     <body class="aui">
 
+#############################################
+##    форма редактирования
+#############################################
 
         <section id="task-edit-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" style="width: 640px;" role="dialog" aria-hidden="true">
             <header class="aui-dialog2-header">
@@ -23,8 +27,6 @@
                     <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
                 </a>
             </header>
-
-
 
             <div class="aui-dialog2-content task-edit-content">
                 <form class="aui">
@@ -45,7 +47,7 @@
 
                     <div>
                         <label for="editisactive">Активно</label>
-                        <aui-toggle id="editisactive"></aui-toggle>
+                        <aui-toggle id="editisactive" label="editisactive"></aui-toggle>
                     </div>
 
                     <div>
@@ -56,8 +58,12 @@
                     <div style="margin-top: 20px">
                         <label for="receiveruser">Добавить получателя</label>
                         <input class="text large-field" id="receiveruser" type="text" name="receiveruser">
+                    </div>
+
+                    <div class="aui-buttons" style="padding-left: 160px;">
                         <button id="add-user-button" class="aui-button aui-button-primary">Добавить</button>
                     </div>
+
 
                     <div>
                         <label for="receivers">Получатели</label>
@@ -69,6 +75,10 @@
 ##                            <option>option five</option>
 ##                            <option>option six</option>
                         </select>
+
+                    </div>
+
+                    <div class="aui-buttons" style="padding-left: 160px;">
                         <button id="remove-user-button" class="aui-button aui-button-primary">Удалить</button>
                         <button id="clear-user-button" class="aui-button aui-button-primary">Очистить</button>
                     </div>
@@ -85,9 +95,57 @@
                 </div>
             </footer>
         </section>
+#############################################
 
 
+#############################################
+##      форма предварительного просмотра отчета
+#############################################
+        <section id="show-demo-dialog" class="aui-dialog2 aui-dialog2-large aui-layer" style="width: 640px;" role="dialog" aria-hidden="true">
+            <header class="aui-dialog2-header">
+                <h2 class="aui-dialog2-header-main">Добавить новый отчет</h2>
+                <a class="aui-dialog2-header-close">
+                    <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
+                </a>
+            </header>
 
+            <div class="aui-dialog2-content show-demo-content">
+                Тут будет содержимое
+            </div>
+
+            <footer class="aui-dialog2-footer">
+                <div class="aui-dialog2-footer-actions">
+                    <button id="edit-submit-button" class="aui-button aui-button-primary">Закрыть</button>
+                </div>
+            </footer>
+        </section>
+#############################################
+
+
+#############################################
+## окно подтверждения удаления
+#############################################
+        <section id="delete-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" role="dialog" aria-hidden="true">
+            <header class="aui-dialog2-header">
+                <h2 class="aui-dialog2-header-main">Удаление отчета</h2>
+                <a class="aui-dialog2-header-close">
+                    <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
+                </a>
+
+            </header>
+            <div class="aui-dialog2-content">
+                <div id="deleted-report">
+                    <p>user1 user2 user3 .....</p>
+                </div>
+            </div>
+            <footer class="aui-dialog2-footer">
+                <div class="aui-dialog2-footer-actions">
+                    <button id="delete-dialog-confirm" class="aui-button aui-button-primary">Удалить</button>
+                    <button id="delete-dialog-cancel" class="aui-button aui-button-link">Отмена</button>
+                </div>
+            </footer>
+        </section>
+#############################################
 
 
         <h2>Настройка отчетов</h2>
@@ -124,7 +182,7 @@
                 <button id="button-add" class="aui-button">Добавить отчет</button>
             </div>
 
-            <table class="aui">
+            <table id="reports-setup" class="aui">
                 <thead>
                     <tr>
                         <th id="basic-number">#</th>
@@ -137,8 +195,8 @@
                         <th id="basic-test"></th>
                         <th id="basic-del"></th>
                     </tr>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
 
                     <tr>
                         <td headers="basic-number">1</td>
@@ -146,68 +204,44 @@
                         <td headers="basic-users">user1@xx.com</td>
                         <td headers="basic-sheds">17,21</td>
                         <td headers="basic-active">
-                            <aui-toggle id="change-active"></aui-toggle>
+                            <aui-toggle id="change-active" label="change-active"></aui-toggle>
                         </td>
-                        <td headers="basic-edit">
-                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
+                        <td headers="basic-edit" style="cursor: pointer">
+                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Edit</span>
                         </td>
-                        <td headers="basic-view">
-                            <span class="aui-icon aui-icon-small aui-iconfont-screen">Insert meaningful text here for accessibility</span>
+                        <td headers="basic-view" style="cursor: pointer">
+                            <span class="aui-icon aui-icon-small aui-iconfont-screen">View</span>
                         </td>
-                        <td headers="basic-test">
-                            <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
+                        <td headers="basic-test" style="cursor: pointer">
+                            <span class="aui-icon aui-icon-small aui-iconfont-email">Test</span>
                         </td>
-                        <td headers="basic-del">
-                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
+                        <td headers="basic-del" style="cursor: pointer">
+                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Delete</span>
                         </td>
                     </tr>
-                    <tr>
 
-                    <tr>
-                        <td headers="basic-number">2</td>
-                        <td headers="basic-name">Тестовый отчет</td>
-                        <td headers="basic-users">user1@xx.com</td>
-                        <td headers="basic-sheds">0 0 0 1 1/3 *</td>
-                        <td headers="basic-active">
-                            <aui-toggle id="change-active"></aui-toggle>
-                        </td>
-                        <td headers="basic-edit">
-                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
-                        </td>
-                        <td headers="basic-view">
-                            <span class="aui-icon aui-icon-small aui-iconfont-screen">Insert meaningful text here for accessibility</span>
-                        </td>
-                        <td headers="basic-test">
-                            <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
-                        </td>
-                        <td headers="basic-del">
-                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
-                        </td>
-                    </tr>
-                    <tr>
+##                    <tr>
+##                        <td headers="basic-number">2</td>
+##                        <td headers="basic-name">Тестовый отчет</td>
+##                        <td headers="basic-users">user1@xx.com</td>
+##                        <td headers="basic-sheds">0 0 0 1 1/3 *</td>
+##                        <td headers="basic-active">
+##                            <aui-toggle id="change-active"></aui-toggle>
+##                        </td>
+##                        <td headers="basic-edit" style="cursor: pointer">
+##                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Edit</span>
+##                        </td>
+##                        <td headers="basic-view" style="cursor: pointer">
+##                            <span class="aui-icon aui-icon-small aui-iconfont-screen">View</span>
+##                        </td>
+##                        <td headers="basic-test" style="cursor: pointer">
+##                            <span class="aui-icon aui-icon-small aui-iconfont-email">Test</span>
+##                        </td>
+##                        <td headers="basic-del" style="cursor: pointer">
+##                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Delete</span>
+##                        </td>
+##                    </tr>
 
-                    <tr>
-                        <td headers="basic-number">3</td>
-                        <td headers="basic-name">Тестовый отчет</td>
-                        <td headers="basic-users">user1@xx.com user2@xx.com</td>
-                        <td headers="basic-sheds">0 0 0 1 1/3 *</td>
-                        <td headers="basic-active">
-                            <aui-toggle id="change-active"></aui-toggle>
-                        </td>
-                        <td headers="basic-edit">
-                            <span class="aui-icon aui-icon-small aui-iconfont-new-edit">Insert meaningful text here for accessibility</span>
-                        </td>
-                        <td headers="basic-view">
-                            <span class="aui-icon aui-icon-small aui-iconfont-screen">Insert meaningful text here for accessibility</span>
-                        </td>
-                        <td headers="basic-test">
-                            <span class="aui-icon aui-icon-small aui-iconfont-email">Insert meaningful text here for accessibility</span>
-                        </td>
-                        <td headers="basic-del">
-                            <span class="aui-icon aui-icon-small aui-iconfont-trash">Insert meaningful text here for accessibility</span>
-                        </td>
-                    </tr>
-                    <tr>
 
                 </tbody>
             </table>

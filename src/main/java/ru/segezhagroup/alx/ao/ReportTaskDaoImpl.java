@@ -48,7 +48,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
         reportTask.setFilterString(filterString);
         reportTask.setShedTime(shedTime);
         reportTask.setIsActive(isActive);
-        reportTask.setUserName(userName);
+        reportTask.setUserKey(userName);
         reportTask.save();
 
          reportTask.save();
@@ -62,7 +62,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
         rTask.setFilterString(reportTask.getFilterString());
         rTask.setShedTime(reportTask.getShedTime());
         rTask.setIsActive(reportTask.getIsActive());
-        rTask.setUserName(reportTask.getUserName());
+        rTask.setUserKey(reportTask.getUserKey());
         rTask.save();
     }
 

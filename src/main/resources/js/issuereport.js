@@ -70,9 +70,9 @@ setupreport.module = (function () {
     var refreshDataInTable = function (jsonData) {
         var dataLength = jsonData.length;
 
-        if (dataLength == 0) {
-            return false;
-        }
+        // if (dataLength == 0) {
+        //     return false;
+        // }
 
         // таблица объект
         var tableObj = AJS.$("#reports-setup tbody");
@@ -131,12 +131,90 @@ setupreport.module = (function () {
     };
 
 
+    // создание задачи с отчетом
+    var createReport = function () {
 
+        var jsonObj = {};
+
+        jsonObj.name = AJS.$("#editname").val();
+        jsonObj.filterstring = AJS.$("#editfilterstring").val();
+        jsonObj.shedtime = AJS.$("#editshedtime").val();
+
+        var toggle = document.getElementById('editisactive');
+        jsonObj.active = toggle.checked;
+
+
+        var receivers = [];
+
+        var recArrVals = AJS.$("#receivers option");
+        var recArrSize = recArrVals.size();
+        for (var i = 0; i < recArrSize; i++) {
+
+            var oneRcv = {};
+            oneRcv.key = AJS.$(recArrVals[i]).val();
+            oneRcv.email = AJS.$(recArrVals[i]).text();
+
+            receivers.push(oneRcv);
+
+        };
+
+
+        jsonObj.receivers = receivers;
+
+//        {
+//            name: "new task",
+//            filterstring: "sdfsdf",
+//            shedtime: "223ge",
+//            active : "true",
+//            receivers: [
+//                {key:"1", email:"e1@mail.com", name: "alx"},
+//                {key:"2", email:"e2@mail.com", name: "gle"}
+//            ]
+//        }
+
+
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/shedulers/newtask",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                // console.log(data);
+                refreshDataInTable(data);
+                // if (data.status == "ok") {
+                //     console.log("ok");
+                //     refreshDataInTable(data);
+                // }
+
+                if (data.status == "ok") {
+                    var myFlag = AJS.flag({
+                        type: 'success',
+                        body: 'Добавлено новое расписание отчетов ' + data.taskid,
+                    });
+                };
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Ошибка создания расписания',
+                });
+
+            },
+        });
+
+        return true;
+    }
 
     return {
         showMessage:showMessage,
         fillTable:fillTable,
         getBaseUrl:getBaseUrl,
+        createReport:createReport,
     };
 }());
 
@@ -150,12 +228,79 @@ AJS.$(document).ready(function() {
     // открыть
     AJS.$("#button-add").click(function(e) {
         e.preventDefault();
+        AJS.$("#task-edit-dialog h2.aui-dialog2-header-main").text("Добавить новый отчет");
+
+        // переменная означающая режим открытия
+        // add - добавить запись
+        // edit - редактировать
+        AJS.$("#editmode").val("add");
+
+        // очистка всех полей
+        AJS.$("#editname").val("");
+        AJS.$("#editfilterstring").val("");
+
+        var toggle = document.getElementById('editisactive');
+        toggle.checked = false;
+
+        AJS.$("#editshedtime").val("");
+
+        AJS.$("#edituser").auiSelect2("val", "");
+        AJS.$("#receiveruser").auiSelect2("val", "");
+
+        AJS.$('#receivers').find('option').remove();
+
         AJS.dialog2("#task-edit-dialog").show();
     });
+
+
+    // добавить получателя в список получателей
+    AJS.$("#add-user-button").click(function (e) {
+        e.preventDefault();
+        // console.log(AJS.$("#receiveruser").auiSelect2("data"));
+
+        var rcvUserVal = AJS.$("#receiveruser").auiSelect2("data");
+        if (rcvUserVal != null) {
+            // сначала проверим чтобы в списке не было такого же пользователя
+            var recArrVals = AJS.$("#receivers option");
+            var recArrSize = recArrVals.size();
+            var findVal = false;
+            for (var i = 0; i < recArrSize; i++) {
+                if (AJS.$(recArrVals[i]).val() == rcvUserVal.key) {
+                    findVal = true;
+                }
+            };
+
+            if (!findVal) {
+                AJS.$('#receivers').append($('<option value="' + rcvUserVal.key + '">' + rcvUserVal.email + '</option>'));
+            };
+
+        }
+
+    });
+
+
+    // удалить пользователя из списка
+    AJS.$("#remove-user-button").click(function (e) {
+        e.preventDefault();
+        AJS.$("#receivers option:selected").remove()
+    });
+
+    // очистить список пользователей пользователя из списка
+    AJS.$("#clear-user-button").click(function (e) {
+        e.preventDefault();
+        AJS.$("#receivers option").remove()
+    });
+
+
 
     // закрыть
     AJS.$("#edit-submit-button").click(function (e) {
         e.preventDefault();
+
+        if (AJS.$("#editmode").val() == "add") {
+            setupreport.module.createReport();
+        };
+
         AJS.dialog2("#task-edit-dialog").hide();
     });
 
@@ -180,7 +325,7 @@ AJS.$(document).ready(function() {
             //     // зачем то надо еще не понял зачем
             //     return {q: term};
             // },
-            results: function (data, page) {
+            results: function (data) {
                 var retVal = [];
                 for (var i = 0; i < data.length; i++) {
                     var jsonObj = {};
@@ -203,7 +348,7 @@ AJS.$(document).ready(function() {
 
     ////////////////////////////////////////////////////
     // инициализация селекта для поля Добавить пользователя
-    AJS.$("#receiveruser").auiSelect2({
+        AJS.$("#receiveruser").auiSelect2({
         // minimumInputLength: 0,
         ajax: {
             delay: 250,

@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.atlassian.json</groupId>
             <artifactId>atlassian-json-api</artifactId>
-            <version>RELEASE</version>
+            <version>1.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

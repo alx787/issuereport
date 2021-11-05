@@ -22,7 +22,7 @@
 
         <section id="task-edit-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" style="width: 640px;" role="dialog" aria-hidden="true">
             <header class="aui-dialog2-header">
-                <h2 class="aui-dialog2-header-main">Добавить новый отчет</h2>
+                <h2 class="aui-dialog2-header-main">Описание действия</h2>
                 <a class="aui-dialog2-header-close">
                     <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
                 </a>
@@ -30,6 +30,13 @@
 
             <div class="aui-dialog2-content task-edit-content">
                 <form class="aui">
+
+                    ## эти переменные нужны для того чтобы определить режим открытия формы
+                    ## add - добавить запись
+                    ## edit - редактировать
+                    <input id="editmode" type="hidden" name="editmode">
+                    <input id="tasknumber" type="hidden" name="tasknumber">
+
                     <div>
                         <label for="editname">Название</label>
                         <input class="text large-field" id="editname" type="text" name="name">

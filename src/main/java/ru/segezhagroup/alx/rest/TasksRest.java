@@ -206,7 +206,7 @@ public class TasksRest {
         // готовим ответ
         JsonObject jsonOutput = new JsonObject();
         jsonOutput.addProperty("status", "ok");
-        jsonOutput.addProperty("description", reportTask.getID());
+        jsonOutput.addProperty("taskid", reportTask.getID());
 
         Gson gson = new Gson();
 

@@ -4,7 +4,9 @@
         <meta name="decorator" content="atl.admin"/>
         <meta name="admin.active.section" content="admin_plugins_menu/setup-issuereport"/>
 
-        $webResourceManager.requireResource("com.atlassian.auiplugin:aui-experimental-iconfont")
+##        $webResourceManager.requireResource("com.atlassian.auiplugin:aui-experimental-iconfont")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:aui-iconography")
+
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-toggle")
         $webResourceManager.requireResource("com.atlassian.auiplugin:aui-buttons")
         $webResourceManager.requireResource("com.atlassian.auiplugin:dialog2")

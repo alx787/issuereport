@@ -189,7 +189,8 @@ public class TasksRest {
             Receiver receiver = receiverDao.create(reportTask,
                                                     jsonUserObject.get("key").getAsString(),
                                                     jsonUserObject.get("email").getAsString(),
-                                                    jsonUserObject.get("name").getAsString());
+                                                    "");
+//                                                    jsonUserObject.get("name").getAsString());
 
             if (receiver == null) {
                 // задачу по идее надо бы удалить

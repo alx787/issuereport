@@ -8,8 +8,11 @@ setupreport.module = (function () {
     };
 
 
+    // глобальная переменная модуля хранит урл инстанса
     var jiraBaseUrl = null;
 
+    /////////////////////////////////////////////////////////
+    // функция для получения урл из датапровайдера при первом обращении
     var getBaseUrl = function() {
 
         // инициализируем переменную при первом запуске
@@ -23,7 +26,6 @@ setupreport.module = (function () {
         }
 
         return jiraBaseUrl;
-
     };
 
 
@@ -38,10 +40,10 @@ setupreport.module = (function () {
         + '<td headers="basic-name">__name__</td>'
         + '<td headers="basic-users">__user__</td>'
         + '<td headers="basic-sheds">__sheds__</td>'
-        + '<td headers="basic-active">'
-        +     '<aui-toggle id="change-active-__number__" label="change-active"></aui-toggle>'
+        + '<td headers="basic-active" style="cursor: pointer">'
+        +     '__badge__'
         + '</td>'
-        + '<td headers="basic-edit" style="cursor: pointer">'
+        + '<td headers="basic-edit" style="cursor: pointer" onclick="setupreport.module.openReport(this);">'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-new-edit">Edit</span>'
         + '</td>'
         + '<td headers="basic-view" style="cursor: pointer">'
@@ -60,6 +62,14 @@ setupreport.module = (function () {
         rowStr = rowStr.replace("__name__", name);
         rowStr = rowStr.replace("__user__", user);
         rowStr = rowStr.replace("__sheds__", sheds);
+
+        if (active) {
+            rowStr = rowStr.replace("__badge__", '<aui-badge class="aui-badge-primary">Включено</aui-badge>');
+        } else {
+            rowStr = rowStr.replace("__badge__", '<aui-badge>Выключено</aui-badge>');
+
+        };
+
 
         return rowStr;
     };
@@ -91,8 +101,9 @@ setupreport.module = (function () {
                                     );
 
             tableObj.append(oneRow);
-        }
 
+
+        }
 
     };
 
@@ -121,7 +132,7 @@ setupreport.module = (function () {
             error: function(data) {
                 var myFlag = AJS.flag({
                     type: 'error',
-                    body: 'Ошибка загрузки',
+                    body: 'Ошибка обновления списка отчетов',
                 });
 
             },
@@ -131,28 +142,112 @@ setupreport.module = (function () {
     };
 
 
+    /////////////////////////////////////////////////////////
+    // проверка заполненности полей
+    // возвращает названия незаполнненных полей, или пустая строка если все заполнено
+    var checkEmptyFields = function () {
+
+        var msg = "";
+
+        if (AJS.$.trim(AJS.$("#editname").val()) == "") {
+            msg = msg + "<p>название</p>";
+        }
+
+        if (AJS.$.trim(AJS.$("#editfilterstring").val()) == "") {
+            msg = msg +"<p>запрос</p>";
+        }
+
+        if (AJS.$.trim(AJS.$("#editshedtime").val()) == "") {
+            msg = msg + "<p>время</p>";
+        }
+
+
+        if (AJS.$("#edituser").auiSelect2("data") == null) {
+            msg = msg + "<p>пользователь</p>";
+        }
+
+        if (AJS.$("#receivers option").size() == 0) {
+            msg = msg + "<p>получатели</p>";
+        }
+
+        return msg;
+
+    }
+
+
+    /////////////////////////////////////////////////////////
+    // открытие задачи
+    var openReport = function(elemEdit) {
+        // console.log(AJS.$(elemEdit).parent().find("td")[0].textContent);
+        // console.log(elemEdit.parentElement.getElementsByTagName("td")[0].textContent);
+
+        var taskId = elemEdit.parentElement.getElementsByTagName("td")[0].textContent;
+
+        AJS.$.ajax({
+            url: getBaseUrl() + "/rest/issuereport/1.0/shedulers/gettask/" + taskId,
+            type: 'get',
+            dataType: 'json',
+            // data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                console.log(data);
+                // refreshDataInTable(data);
+                // if (data.status == "ok") {
+                //     console.log("ok");
+                //     refreshDataInTable(data);
+                // }
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Ошибка при получении данных',
+                });
+
+            },
+        });
+
+    }
+
+
+    /////////////////////////////////////////////////////////
     // создание задачи с отчетом
     var createReport = function () {
 
+        var msgReqFields = checkEmptyFields();
+
+        if (msgReqFields != "") {
+            var myFlag = AJS.flag({
+                type: 'error',
+                body: '<p><b>Не заполнены поля</b></p>' + msgReqFields,
+                close: 'auto'
+            });
+            return false;
+        }
+
+
         var jsonObj = {};
 
-        jsonObj.name = AJS.$("#editname").val();
-        jsonObj.filterstring = AJS.$("#editfilterstring").val();
-        jsonObj.shedtime = AJS.$("#editshedtime").val();
+        jsonObj.name =          AJS.$("#editname").val();
+        jsonObj.filterstring =  AJS.$("#editfilterstring").val();
+        jsonObj.shedtime =      AJS.$("#editshedtime").val();
 
         var toggle = document.getElementById('editisactive');
         jsonObj.active = toggle.checked;
-
+        jsonObj.userkey =       AJS.$("#edituser").auiSelect2("data").key;
 
         var receivers = [];
 
-        var recArrVals = AJS.$("#receivers option");
+        var recArrVals =        AJS.$("#receivers option");
         var recArrSize = recArrVals.size();
         for (var i = 0; i < recArrSize; i++) {
 
             var oneRcv = {};
-            oneRcv.key = AJS.$(recArrVals[i]).val();
-            oneRcv.email = AJS.$(recArrVals[i]).text();
+            oneRcv.key =    AJS.$(recArrVals[i]).val();
+            oneRcv.email =  AJS.$(recArrVals[i]).text();
 
             receivers.push(oneRcv);
 
@@ -183,25 +278,26 @@ setupreport.module = (function () {
             contentType: "application/json; charset=utf-8",
             success: function(data) {
 
-                // console.log(data);
-                refreshDataInTable(data);
-                // if (data.status == "ok") {
-                //     console.log("ok");
-                //     refreshDataInTable(data);
-                // }
-
-                if (data.status == "ok") {
+         /////////////////////////////////////////////////////////
+           if (data.status == "ok") {
                     var myFlag = AJS.flag({
                         type: 'success',
-                        body: 'Добавлено новое расписание отчетов ' + data.taskid,
+                        body: 'Добавлен новый отчет ' + data.taskid,
                     });
-                };
+
+                    // закрываем окно если завершилось нормально
+                    AJS.dialog2("#task-edit-dialog").hide();
+
+                // console.log(data);
+                fillTable();
+
+                }
 
             },
             error: function(data) {
                 var myFlag = AJS.flag({
                     type: 'error',
-                    body: 'Ошибка создания расписания',
+                    body: 'Ошибка создания отчета',
                 });
 
             },
@@ -215,6 +311,7 @@ setupreport.module = (function () {
         fillTable:fillTable,
         getBaseUrl:getBaseUrl,
         createReport:createReport,
+        openReport:openReport,
     };
 }());
 
@@ -293,7 +390,7 @@ AJS.$(document).ready(function() {
 
 
 
-    // закрыть
+    // кнопка ОК
     AJS.$("#edit-submit-button").click(function (e) {
         e.preventDefault();
 
@@ -301,7 +398,9 @@ AJS.$(document).ready(function() {
             setupreport.module.createReport();
         };
 
-        AJS.dialog2("#task-edit-dialog").hide();
+        // закрытие формы будет в функции создания или обновления
+        // чтобы не закрыть форму в случае ошибок
+        //AJS.dialog2("#task-edit-dialog").hide();
     });
 
     AJS.$("#edit-cancel-button").click(function (e) {
@@ -309,14 +408,15 @@ AJS.$(document).ready(function() {
         AJS.dialog2("#task-edit-dialog").hide();
     });
 
-    ////////////////////////////////////////////////////
+    ///////////////////////////////////.java:192/////////////////
     // инициализация селекта для поля Пользователь
     AJS.$("#edituser").auiSelect2({
         // minimumInputLength: 0,
         ajax: {
             delay: 250,
             url: function(searchdata) {
-                return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
+                // return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
+                return setupreport.module.getBaseUrl() + "/rest/api/2/user/search?username=" + searchdata;
             },
 
             // url: 'https://api.github.com/search/repositories',
@@ -329,7 +429,7 @@ AJS.$(document).ready(function() {
                 var retVal = [];
                 for (var i = 0; i < data.length; i++) {
                     var jsonObj = {};
-                    console.log(data[i]);
+                    // console.log(data[i]);
                     jsonObj.id = data[i].name;
                     //jsonObj.id = i;
                     jsonObj.text = data[i].displayName;
@@ -353,7 +453,8 @@ AJS.$(document).ready(function() {
         ajax: {
             delay: 250,
             url: function(searchdata) {
-                return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
+                // return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
+                return setupreport.module.getBaseUrl() + "/rest/api/2/user/search?username=" + searchdata;
             },
 
             // url: 'https://api.github.com/search/repositories',
@@ -366,7 +467,7 @@ AJS.$(document).ready(function() {
                 var retVal = [];
                 for (var i = 0; i < data.length; i++) {
                     var jsonObj = {};
-                    console.log(data[i]);
+                    // console.log(data[i]);
                     jsonObj.id = data[i].name;
                     //jsonObj.id = i;
                     jsonObj.text = data[i].displayName;

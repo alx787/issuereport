@@ -458,6 +458,35 @@ setupreport.module = (function () {
         // AJS.$("#deletenumber").val(taskId);
         // AJS.$("#deleted-report").text("Удалить отчет " + taskId + " ?");
 
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/reports/getreport/" + taskId,
+            type: 'get',
+            // dataType: 'json',
+            // data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/html; charset=utf-8",
+            success: function(data) {
+
+                console.log(data);
+
+                /////////////////////////////////////////////////////////
+                var resultHtml = "<iframe>" + data + "</iframe>";
+                AJS.$("#demo-content").html(resultHtml);
+
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Произошла ошибка',
+                    close: 'auto'
+                });
+
+            },
+        });
+
+
         AJS.dialog2("#show-demo-dialog").show();
     }
 
@@ -666,12 +695,13 @@ AJS.$(document).ready(function() {
 
 
     ////////////////////////////////////////////////////
-    // предпросмотр
-    // AJS.$("#reports-setup tr td[headers='basic-active']").click(function(e) {
-    //     e.preventDefault();
-    //     AJS.dialog2("#show-demo-dialog").show();
-    // });
-    //
+    // предпросмотр кнопка закрытия формы
+    AJS.$("#show-submit-button").on("click", function(e) {
+        e.preventDefault();
+        AJS.dialog2("#show-demo-dialog").hide();
+    });
+
+
 
 
     setupreport.module.fillTable();

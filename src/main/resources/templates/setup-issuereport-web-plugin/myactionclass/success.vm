@@ -110,21 +110,21 @@
 #############################################
 ##      форма предварительного просмотра отчета
 #############################################
-        <section id="show-demo-dialog" class="aui-dialog2 aui-dialog2-large aui-layer" style="width: 640px;" role="dialog" aria-hidden="true">
+        <section id="show-demo-dialog" class="aui-dialog2 aui-dialog2-large aui-layer" style="width: 90%;" role="dialog" aria-hidden="true">
             <header class="aui-dialog2-header">
-                <h2 class="aui-dialog2-header-main">Добавить новый отчет</h2>
+                <h2 class="aui-dialog2-header-main">Предварительный просмотр отчета</h2>
                 <a class="aui-dialog2-header-close">
                     <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
                 </a>
             </header>
 
-            <div class="aui-dialog2-content show-demo-content">
-                Тут будет содержимое
+            <div id="demo-content" class="aui-dialog2-content show-demo-content">
+##                Тут будет содержимое
             </div>
 
             <footer class="aui-dialog2-footer">
                 <div class="aui-dialog2-footer-actions">
-                    <button id="edit-submit-button" class="aui-button aui-button-primary">Закрыть</button>
+                    <button id="show-submit-button" class="aui-button aui-button-primary">Закрыть</button>
                 </div>
             </footer>
         </section>

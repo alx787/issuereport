@@ -24,13 +24,18 @@
     <description>The AO module for this plugin.</description>  
     <entity>ru.segezhagroup.alx.ao.ReportTask</entity>  
     <entity>ru.segezhagroup.alx.ao.Receiver</entity> 
-  </ao>  
+  </ao>
+
   <rest name="Tasks Rest" i18n-name-key="tasks-rest.name" key="tasks-rest" path="/issuereport" version="1.0"> 
     <description key="tasks-rest.description">The Tasks Rest Plugin</description> 
+  </rest>
+  <rest name="Reports Rest" i18n-name-key="reports-rest.name" key="reports-rest" path="/issuereport" version="1.0">
+    <description key="reports-rest.description">The Reports Rest Plugin</description>
   </rest>
   <rest name="Test Rest" i18n-name-key="test rest" key="test-rest" path="/issuereport" version="1.0">
     <description key="test-rest">The Test Rest Plugin</description>
   </rest>
+
   <web-section name="setup issuereport" i18n-name-key="setup-issuereport.name" key="setup-issuereport" location="admin_plugins_menu" weight="1000">
     <description key="setup-issuereport.description">The setup-issuereport Plugin</description>  
     <label key="setup-issuereport.label"/> 

@@ -118,11 +118,25 @@ public class TasksRest {
 
         ApplicationUser appUser = ComponentAccessor.getUserManager().getUserByKey(reportTask.getUserKey());
         if (appUser != null) {
+            jsonTaskObject.addProperty("userid", appUser.getId());
             jsonTaskObject.addProperty("username", appUser.getName());
+            jsonTaskObject.addProperty("useremail", appUser.getEmailAddress());
+            jsonTaskObject.addProperty("userkey", appUser.getKey());
+
         } else {
+            jsonTaskObject.addProperty("userid", "");
             jsonTaskObject.addProperty("username", "");
+            jsonTaskObject.addProperty("useremail", "");
+            jsonTaskObject.addProperty("userkey", "");
+
         }
 
+//        {
+//            "id": "testuser",
+//                "text": "Тестов Тест Тестович",
+//                "email": "testov@organuzatsia.com",
+//                "key": "JIRAUSER10101"
+//        }
 
         JsonArray jsonUserArray = new JsonArray();
 
@@ -230,7 +244,7 @@ public class TasksRest {
         String filterString = jsonInput.get("filterstring").getAsString();
         String shedTime = jsonInput.get("shedtime").getAsString();
         Boolean active = jsonInput.get("active").getAsBoolean();
-        String userName = jsonInput.get("username").getAsString();
+//        String userName = jsonInput.get("username").getAsString();
         String userKey = jsonInput.get("userkey").getAsString();
 
         // пользователи
@@ -248,6 +262,7 @@ public class TasksRest {
         reportTask.setShedTime(shedTime);
         reportTask.setIsActive(active);
         reportTask.setUserKey(userKey);
+
         reportTaskDao.update(reportTask);
 
 
@@ -260,7 +275,8 @@ public class TasksRest {
             Receiver receiver = receiverDao.create(reportTask,
                     jsonUserObject.get("key").getAsString(),
                     jsonUserObject.get("email").getAsString(),
-                    jsonUserObject.get("name").getAsString());
+                    "");
+//                    jsonUserObject.get("name").getAsString());
 
             if (receiver == null) {
                 // задачу по идее надо бы удалить
@@ -275,7 +291,7 @@ public class TasksRest {
         // готовим ответ
         JsonObject jsonOutput = new JsonObject();
         jsonOutput.addProperty("status", "ok");
-        jsonOutput.addProperty("description", reportTask.getID());
+        jsonOutput.addProperty("taskid", reportTask.getID());
 
         Gson gson = new Gson();
 
@@ -283,7 +299,7 @@ public class TasksRest {
 
     }
 
-    @POST
+    @GET
 //    @AnonymousAllowed
     @Produces({MediaType.APPLICATION_JSON})
     @Path("/deletetask/{taskid}")

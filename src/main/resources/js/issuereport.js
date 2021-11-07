@@ -43,22 +43,22 @@ setupreport.module = (function () {
         + '<td headers="basic-active" style="cursor: pointer">'
         +     '__badge__'
         + '</td>'
-        + '<td headers="basic-edit" style="cursor: pointer" onclick="setupreport.module.openReport(this);">'
+        + '<td headers="basic-edit" style="cursor: pointer" onclick="setupreport.module.openReport(__number__);">'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-new-edit">Edit</span>'
         + '</td>'
-        + '<td headers="basic-view" style="cursor: pointer">'
+        + '<td headers="basic-view" style="cursor: pointer" onclick="setupreport.module.openDemo(__number__);">'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-screen">View</span>'
         + '</td>'
         + '<td headers="basic-test" style="cursor: pointer">'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-email">Test</span>'
         + '</td>'
-        + '<td headers="basic-del" style="cursor: pointer">'
+        + '<td headers="basic-del" style="cursor: pointer" onclick="setupreport.module.showDeleteDialog(__number__);"'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-trash">Delete</span>'
         + '</td>'
         + '</tr>';
 
         var rowStr = rowTemplate;
-        rowStr = rowStr.replace("__number__", number);
+        rowStr = rowStr.replaceAll("__number__", number);
         rowStr = rowStr.replace("__name__", name);
         rowStr = rowStr.replace("__user__", user);
         rowStr = rowStr.replace("__sheds__", sheds);
@@ -177,11 +177,11 @@ setupreport.module = (function () {
 
     /////////////////////////////////////////////////////////
     // открытие задачи
-    var openReport = function(elemEdit) {
+    var openReport = function(taskId) {
         // console.log(AJS.$(elemEdit).parent().find("td")[0].textContent);
         // console.log(elemEdit.parentElement.getElementsByTagName("td")[0].textContent);
 
-        var taskId = elemEdit.parentElement.getElementsByTagName("td")[0].textContent;
+        // var taskId = elemEdit.parentElement.getElementsByTagName("td")[0].textContent;
 
         AJS.$.ajax({
             url: getBaseUrl() + "/rest/issuereport/1.0/shedulers/gettask/" + taskId,
@@ -194,6 +194,49 @@ setupreport.module = (function () {
             success: function(data) {
 
                 console.log(data);
+
+                AJS.$("#task-edit-dialog h2.aui-dialog2-header-main").text("Изменить отчет № " + taskId);
+
+                // переменная означающая режим открытия
+                // add - добавить запись
+                // edit - редактировать
+                AJS.$("#editmode").val("edit");
+                AJS.$("#tasknumber").val(taskId);
+
+
+                // заполнение всех полей
+                AJS.$("#editname").val(data.name);
+                AJS.$("#editfilterstring").val(data.filterstring);
+
+                var toggle = document.getElementById('editisactive');
+                toggle.checked = data.active;
+
+                AJS.$("#editshedtime").val(data.sheds);
+
+                // $("#mySelect2").select2('data', { id:"elementID", text: "Hello!"});
+                // для установки значения нужна информация в виде
+                //     {
+                //         "id": "testuser",
+                //         "text": "Тестов Тест Тестович",
+                //         "email": "testov@organuzatsia.com",
+                //         "key": "JIRAUSER10101"
+                //     }
+
+                AJS.$("#edituser").auiSelect2("data", { id: data.userid, text: data.username, email: data.useremail, key: data.userkey});
+                AJS.$("#receiveruser").auiSelect2("val", "");
+
+
+                AJS.$('#receivers').find('option').remove();
+                for (var i = 0; i < data.receivers.length; i++ ) {
+                    AJS.$('#receivers').append($('<option value="' + data.receivers[i].key + '">' + data.receivers[i].email + '</option>'));
+                }
+
+
+                AJS.dialog2("#task-edit-dialog").show();
+
+
+
+
                 // refreshDataInTable(data);
                 // if (data.status == "ok") {
                 //     console.log("ok");
@@ -210,12 +253,14 @@ setupreport.module = (function () {
             },
         });
 
-    }
+    };
 
 
     /////////////////////////////////////////////////////////
-    // создание задачи с отчетом
-    var createReport = function () {
+    // действие над задачей, в зависимости от параметра actionString
+    // add - добавить задачу
+    // edit - редактировать задачу
+    var createUpdateReport = function (actionString) {
 
         var msgReqFields = checkEmptyFields();
 
@@ -231,12 +276,14 @@ setupreport.module = (function () {
 
         var jsonObj = {};
 
+        jsonObj.taskid =        AJS.$("#tasknumber").val();
         jsonObj.name =          AJS.$("#editname").val();
         jsonObj.filterstring =  AJS.$("#editfilterstring").val();
         jsonObj.shedtime =      AJS.$("#editshedtime").val();
 
         var toggle = document.getElementById('editisactive');
         jsonObj.active = toggle.checked;
+
         jsonObj.userkey =       AJS.$("#edituser").auiSelect2("data").key;
 
         var receivers = [];
@@ -268,8 +315,30 @@ setupreport.module = (function () {
 //        }
 
 
+        var url_rest = "";
+
+        if (actionString == "add") {
+            url_rest = setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/shedulers/newtask";
+        };
+
+        if (actionString == "edit") {
+            url_rest = setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/shedulers/updatetask";
+        };
+
+        if (url_rest == "") {
+            var myFlag = AJS.flag({
+                type: 'error',
+                body: 'Не определено действие над задачей',
+                close: 'auto'
+            });
+
+            return false;
+
+        }
+
+
         AJS.$.ajax({
-            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/shedulers/newtask",
+            url: url_rest,
             type: 'post',
             dataType: 'json',
             data: JSON.stringify(jsonObj),
@@ -282,7 +351,8 @@ setupreport.module = (function () {
            if (data.status == "ok") {
                     var myFlag = AJS.flag({
                         type: 'success',
-                        body: 'Добавлен новый отчет ' + data.taskid,
+                        body: 'Обновлен отчет ' + data.taskid,
+                        close: 'auto'
                     });
 
                     // закрываем окно если завершилось нормально
@@ -297,7 +367,8 @@ setupreport.module = (function () {
             error: function(data) {
                 var myFlag = AJS.flag({
                     type: 'error',
-                    body: 'Ошибка создания отчета',
+                    body: 'Произошла ошибка',
+                    close: 'auto'
                 });
 
             },
@@ -306,11 +377,100 @@ setupreport.module = (function () {
         return true;
     }
 
+
+    /////////////////////////////////////////////////////////
+    // создание задачи с отчетом
+    var createReport = function () {
+        createUpdateReport("add");
+    }
+
+    /////////////////////////////////////////////////////////
+    // обновить задачи с отчетом
+    var editReport = function () {
+        createUpdateReport("edit");
+    }
+
+
+    var showDeleteDialog = function (taskId) {
+
+        // предварительно установим скрытый идентификатор задачи
+        AJS.$("#deletenumber").val(taskId);
+        AJS.$("#deleted-report").text("Удалить отчет " + taskId + " ?");
+
+        AJS.dialog2("#delete-dialog").show();
+
+    }
+
+
+    /////////////////////////////////////////////////////////
+    // удалить задачу с отчетом
+    var deleteReport = function () {
+        // console.log(taskId);
+
+        var taskId = AJS.$("#deletenumber").val();
+
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/shedulers/deletetask/" + taskId,
+            type: 'get',
+            dataType: 'json',
+            // data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                /////////////////////////////////////////////////////////
+                if (data.status == "ok") {
+                    var myFlag = AJS.flag({
+                        type: 'success',
+                        body: 'Удален отчет ' + taskId,
+                        close: 'auto'
+                    });
+
+                    // закрываем окно если завершилось нормально
+                    AJS.dialog2("#delete-dialog").hide();
+
+                    // console.log(data);
+                    fillTable();
+
+                }
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Произошла ошибка',
+                    close: 'auto'
+                });
+
+            },
+        });
+
+        return true;
+    }
+
+
+
+    /////////////////////////////////////////////////////////
+    // предварительный просмотр отчета
+    var openDemo = function (taskId) {
+        // предварительно установим скрытый идентификатор задачи
+        // AJS.$("#deletenumber").val(taskId);
+        // AJS.$("#deleted-report").text("Удалить отчет " + taskId + " ?");
+
+        AJS.dialog2("#show-demo-dialog").show();
+    }
+
+
     return {
         showMessage:showMessage,
         fillTable:fillTable,
         getBaseUrl:getBaseUrl,
         createReport:createReport,
+        editReport:editReport,
+        deleteReport:deleteReport,
+        showDeleteDialog:showDeleteDialog,
+        openDemo:openDemo,
         openReport:openReport,
     };
 }());
@@ -331,6 +491,8 @@ AJS.$(document).ready(function() {
         // add - добавить запись
         // edit - редактировать
         AJS.$("#editmode").val("add");
+        AJS.$("#tasknumber").val("");
+
 
         // очистка всех полей
         AJS.$("#editname").val("");
@@ -398,6 +560,11 @@ AJS.$(document).ready(function() {
             setupreport.module.createReport();
         };
 
+        if (AJS.$("#editmode").val() == "edit") {
+            setupreport.module.editReport();
+        };
+
+
         // закрытие формы будет в функции создания или обновления
         // чтобы не закрыть форму в случае ошибок
         //AJS.dialog2("#task-edit-dialog").hide();
@@ -448,7 +615,7 @@ AJS.$(document).ready(function() {
 
     ////////////////////////////////////////////////////
     // инициализация селекта для поля Добавить пользователя
-        AJS.$("#receiveruser").auiSelect2({
+    AJS.$("#receiveruser").auiSelect2({
         // minimumInputLength: 0,
         ajax: {
             delay: 250,
@@ -483,6 +650,20 @@ AJS.$(document).ready(function() {
             }
         }
     });
+
+
+    ///////////////////////////////////////////////////////
+    // события кнопок формы удаления
+    AJS.$("#delete-dialog-confirm").on('click', function (e) {
+        e.preventDefault();
+        setupreport.module.deleteReport();
+    });
+
+    AJS.$("#delete-dialog-cancel").on('click', function (e) {
+        e.preventDefault();
+        AJS.dialog2("#delete-dialog").hide();
+    });
+
 
     ////////////////////////////////////////////////////
     // предпросмотр

@@ -142,9 +142,12 @@
                 </a>
 
             </header>
+
+            <input id="deletenumber" type="hidden" name="deletenumber">
+
             <div class="aui-dialog2-content">
                 <div id="deleted-report">
-                    <p>user1 user2 user3 .....</p>
+                    user1 user2 user3 .....
                 </div>
             </div>
             <footer class="aui-dialog2-footer">

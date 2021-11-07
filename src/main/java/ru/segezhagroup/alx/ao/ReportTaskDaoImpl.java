@@ -59,6 +59,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
     @Override
     public void update(ReportTask reportTask) {
         ReportTask rTask = ao.get(ReportTask.class, reportTask.getID());
+        rTask.setName(reportTask.getName());
         rTask.setFilterString(reportTask.getFilterString());
         rTask.setShedTime(reportTask.getShedTime());
         rTask.setIsActive(reportTask.getIsActive());

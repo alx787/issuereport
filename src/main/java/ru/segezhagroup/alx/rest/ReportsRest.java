@@ -54,7 +54,7 @@ public class ReportsRest {
         }
 
 
-        return Response.ok(MailSender.getReportText(issueList, false)).build();
+        return Response.ok(MailSender.getReportText(reportTask.getName(), issueList, false)).build();
 //        return Response.ok(MailSender.getReportText(issueList, true)).build();
     }
 

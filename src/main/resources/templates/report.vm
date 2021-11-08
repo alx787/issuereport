@@ -1,5 +1,5 @@
 <div>
-    <h1>Отчет по задачам - Название отчета</h1>
+    <h1 style="margin-bottom: 10px;">$reportname</h1>
 
     <table>
         <tr style="color: #ffffff; background-color: #5b9bd5">
@@ -20,77 +20,84 @@
             <th style="width: 80px">Дата решения</th>
         </tr>
 
+        #set ($isStyled = 0)
         #foreach( $reportline in $reportdata )
-            <tr style="background-color: #ddebf7">
-                <td>ИТ-Поддержка</td>
+            #if ($isStyled == 0)
+                #set ($isStyled = 1)
+                <tr style="background-color: #ddebf7">
+            #else
+                #set ($isStyled = 0)
+                <tr>
+            #end
+                <td>$reportline.issueType</td>
                 <td><a href="#">$reportline.issueNumber</a></td>
-                <td>Звонок Быстрых Юлии Сергеевне</td>
-                <td>Быстрых Юлия Сергеевна</td>
-                <td>Кочурова Елена Сергеевна</td>
-                <td>Medium</td>
-                <td>Открытый</td>
-                <td>Нет решения</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td style="text-align: center;">1</td>
-                <td>Call центр</td>
-                <td>Перезвонить</td>
-                <td>17.09.2021</td>
+                <td>$reportline.summary</td>
+                <td>$reportline.assignee</td>
+                <td>$reportline.reporter</td>
+                <td>$reportline.priority</td>
+                <td>$reportline.status</td>
+                <td>$reportline.resolution</td>
+                <td>$reportline.createDate</td>
+                <td>$reportline.updateDate</td>
+                <td>$reportline.execDate</td>
+                <td style="text-align: center;">$reportline.exceedDays</td>
+                <td>$reportline.department</td>
+                <td>$reportline.labels</td>
+                <td>?</td>
             </tr>
         #end
 
-        <tr style="background-color: #ddebf7">
-            <td>ИТ-Поддержка</td>
-            <td><a href="#">TEL-853</a></td>
-            <td>Звонок Быстрых Юлии Сергеевне</td>
-            <td>Быстрых Юлия Сергеевна</td>
-            <td>Кочурова Елена Сергеевна</td>
-            <td>Medium</td>
-            <td>Открытый</td>
-            <td>Нет решения</td>
-            <td>17.09.2021</td>
-            <td>17.09.2021</td>
-            <td>17.09.2021</td>
-            <td style="text-align: center;">1</td>
-            <td>Call центр</td>
-            <td>Перезвонить</td>
-            <td>17.09.2021</td>
-        </tr>
-        <tr>
-            <td>ИТ-Поддержка</td>
-            <td><a href="#">TEL-853</a></td>
-            <td>Звонок Быстрых Юлии Сергеевне</td>
-            <td>Быстрых Юлия Сергеевна</td>
-            <td>Кочурова Елена Сергеевна</td>
-            <td>Medium</td>
-            <td>Открытый</td>
-            <td>Нет решения</td>
-            <td>17.09.2021</td>
-            <td>17.09.2021</td>
-            <td>17.09.2021</td>
-            <td style="text-align: center;">1</td>
-            <td>Call центр</td>
-            <td>Перезвонить</td>
-            <td>17.09.2021</td>
-        </tr>
-        <tr style="background-color: #ddebf7">
-            <td>ИТ-Поддержка</td>
-            <td><a href="#">TEL-853</a></td>
-            <td>Звонок Быстрых Юлии Сергеевне</td>
-            <td>Быстрых Юлия Сергеевна</td>
-            <td>Кочурова Елена Сергеевна</td>
-            <td>Medium</td>
-            <td>Открытый</td>
-            <td>Нет решения</td>
-            <td>17.09.2021</td>
-            <td>17.09.2021</td>
-            <td>17.09.2021</td>
-            <td style="text-align: center;">1</td>
-            <td>Call центр</td>
-            <td>Перезвонить</td>
-            <td>17.09.2021</td>
-        </tr>
+##        <tr style="background-color: #ddebf7">
+##            <td>ИТ-Поддержка</td>
+##            <td><a href="#">TEL-853</a></td>
+##            <td>Звонок Быстрых Юлии Сергеевне</td>
+##            <td>Быстрых Юлия Сергеевна</td>
+##            <td>Кочурова Елена Сергеевна</td>
+##            <td>Medium</td>
+##            <td>Открытый</td>
+##            <td>Нет решения</td>
+##            <td>17.09.2021</td>
+##            <td>17.09.2021</td>
+##            <td>17.09.2021</td>
+##            <td style="text-align: center;">1</td>
+##            <td>Call центр</td>
+##            <td>Перезвонить</td>
+##            <td>17.09.2021</td>
+##        </tr>
+##        <tr>
+##            <td>ИТ-Поддержка</td>
+##            <td><a href="#">TEL-853</a></td>
+##            <td>Звонок Быстрых Юлии Сергеевне</td>
+##            <td>Быстрых Юлия Сергеевна</td>
+##            <td>Кочурова Елена Сергеевна</td>
+##            <td>Medium</td>
+##            <td>Открытый</td>
+##            <td>Нет решения</td>
+##            <td>17.09.2021</td>
+##            <td>17.09.2021</td>
+##            <td>17.09.2021</td>
+##            <td style="text-align: center;">1</td>
+##            <td>Call центр</td>
+##            <td>Перезвонить</td>
+##            <td>17.09.2021</td>
+##        </tr>
+##        <tr style="background-color: #ddebf7">
+##            <td>ИТ-Поддержка</td>
+##            <td><a href="#">TEL-853</a></td>
+##            <td>Звонок Быстрых Юлии Сергеевне</td>
+##            <td>Быстрых Юлия Сергеевна</td>
+##            <td>Кочурова Елена Сергеевна</td>
+##            <td>Medium</td>
+##            <td>Открытый</td>
+##            <td>Нет решения</td>
+##            <td>17.09.2021</td>
+##            <td>17.09.2021</td>
+##            <td>17.09.2021</td>
+##           <td style="text-align: center;">1</td>
+##            <td>Call центр</td>
+##            <td>Перезвонить</td>
+##            <td>17.09.2021</td>
+##        </tr>
 
     </table>
 </div>

@@ -2,11 +2,14 @@ package ru.segezhagroup.alx.tools;
 
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.priority.Priority;
 import com.atlassian.jira.issue.resolution.Resolution;
 import com.atlassian.mail.Email;
 import com.atlassian.mail.MailFactory;
 import com.atlassian.mail.queue.SingleMailQueueItem;
 import com.atlassian.mail.server.SMTPMailServer;
+
+import com.atlassian.jira.issue.IssueManager;
 
 import com.atlassian.velocity.VelocityManager;
 import org.slf4j.Logger;
@@ -43,7 +46,7 @@ public class MailSender {
     }
 
 
-    public static String getReportText(List<Issue> issueList, boolean getMail) {
+    public static String getReportText(String reportname, List<Issue> issueList, boolean getMail) {
 
 
 //        CustomField userNameCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(10300L);
@@ -75,6 +78,7 @@ public class MailSender {
 
         List<ReportData> reportDataList = new ArrayList<ReportData>();
         for (Issue oneIssue: issueList) {
+
             ReportData reportData = new ReportData();
 
             reportData.setIssueNumber(oneIssue.getKey());
@@ -82,14 +86,22 @@ public class MailSender {
             reportData.setSummary(oneIssue.getSummary());
             reportData.setAssignee(oneIssue.getAssignee().getDisplayName());
             reportData.setReporter(oneIssue.getReporter().getDisplayName());
-            reportData.setPriority(oneIssue.getPriority().getName());
+
+            Priority priority = oneIssue.getPriority();
+            if (priority != null) {
+                reportData.setPriority(priority.getName());
+            } else {
+                reportData.setPriority("-");
+            }
+
+
             reportData.setStatus(oneIssue.getStatus().getNameTranslation());
 
             Resolution resolution = oneIssue.getResolution();
             if (resolution != null) {
                 reportData.setResolution(oneIssue.getResolution().getNameTranslation());
             } else {
-                reportData.setResolution("-");
+                reportData.setResolution("Нет решения");
             }
 
 
@@ -102,14 +114,14 @@ public class MailSender {
                 date.setTime(updatedDate.getTime());
                 reportData.setUpdateDate(formatDay.format(date.getTime()));
             } else {
-                reportData.setUpdateDate("-");
+                reportData.setUpdateDate("");
             }
 
 
-            reportData.setExecDate("-");
-            reportData.setExceedDays("-");
-            reportData.setDepartment("-");
-            reportData.setLabels("-");
+            reportData.setExecDate("?");
+            reportData.setExceedDays("?");
+            reportData.setDepartment("?");
+            reportData.setLabels("?");
 
 
             Timestamp resolutionDate = oneIssue.getResolutionDate();
@@ -127,7 +139,7 @@ public class MailSender {
 
         Map params = new HashMap();
         params.put("reportdata", reportDataList);
-//        params.put("reporter", reporter);
+        params.put("reportname", reportname);
 //        params.put("summary", issue.getSummary());
 //        params.put("description", issue.getDescription());
 //        params.put("assignee", issue.getAssignee().getDisplayName());

@@ -22,15 +22,15 @@ public class TestRest {
 
     private static final Logger log = LoggerFactory.getLogger(TestRest.class);
 
-    @GET
-    @Path("/testmail")
-    public Response testMailSend() {
-
-        String testBody = MailSender.getMailText();
-
-        MailSender.sendEmail("test@asd.ru", "test subject", testBody);
-        return Response.ok("[]").build();
-    }
+//    @GET
+//    @Path("/testmail")
+//    public Response testMailSend() {
+//
+//        String testBody = MailSender.getReportText(true);
+//
+//        MailSender.sendEmail("test@asd.ru", "test subject", testBody);
+//        return Response.ok("[]").build();
+//    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})

@@ -57,6 +57,7 @@ public class QueryIssues {
             results = searchService.search(authorUser, query, PagerFilter.getUnlimitedFilter());
         } catch (SearchException e) {
             e.printStackTrace();
+            return null;
         }
 
 

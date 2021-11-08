@@ -14,3 +14,29 @@
     padding: 3px;
     border: 1px solid #c1c7d0;
 }
+
+/*стили для окна предварительного просмотра отчета*/
+
+#demo-content div {
+    font-family: Arial,sans-serif;
+    font-size: 12px;
+}
+
+#demo-content table {
+    border-collapse: collapse;
+    border:1px solid #69899F;
+}
+
+#demo-content table td{
+    border:1px dotted #000000;
+    /*padding:5px;*/
+}
+
+#demo-content table td:first-child{
+    border-left:0px solid #000000;
+}
+
+#demo-content table th{
+    border:2px solid #69899F;
+    /*padding:5px;*/
+}

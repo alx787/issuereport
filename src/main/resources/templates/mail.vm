@@ -13,7 +13,7 @@
         table {
             border-collapse: collapse; 
             border:1px solid #69899F;
-        } 
+        }
         table td{
             border:1px dotted #000000;
             /*padding:5px;*/
@@ -27,80 +27,7 @@
         }        
     </style>    
 </head>
-    <body class="jira" style="font-family: Arial,sans-serif; font-size: 12px;">
-        <h1>Отчет по задачам - Название отчета</h1>
-
-        <table>
-            <tr style="color: #ffffff; background-color: #5b9bd5">
-                <th style="width: 80px">Тип задачи</th>
-                <th style="width: 60px">Код</th>
-                <th style="width: 250px">Тема</th>
-                <th style="width: 140px">Исполнитель</th>
-                <th style="width: 140px">Автор</th>
-                <th style="width: 70px">Приоритет</th>
-                <th style="width: 70px">Статус</th>
-                <th style="width: 70px">Решение</th>
-                <th style="width: 80px">Создано</th>
-                <th style="width: 80px">Обновлено</th>
-                <th style="width: 80px">Срок исполнения</th>
-                <th style="width: 80px">Количество дней просрока</th>
-                <th style="width: 100px">ДЗК</th>
-                <th style="width: 100px">Метки</th>
-                <th style="width: 80px">Дата решения</th>
-            </tr>
-
-            <tr style="background-color: #ddebf7">
-                <td>ИТ-Поддержка</td>
-                <td><a href="#">TEL-853</a></td>
-                <td>Звонок Быстрых Юлии Сергеевне</td>
-                <td>Быстрых Юлия Сергеевна</td>
-                <td>Кочурова Елена Сергеевна</td>
-                <td>Medium</td>
-                <td>Открытый</td>
-                <td>Нет решения</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td style="text-align: center;">1</td>
-                <td>Call центр</td>
-                <td>Перезвонить</td>
-                <td>17.09.2021</td>
-            </tr>    
-            <tr>
-                <td>ИТ-Поддержка</td>
-                <td><a href="#">TEL-853</a></td>
-                <td>Звонок Быстрых Юлии Сергеевне</td>
-                <td>Быстрых Юлия Сергеевна</td>
-                <td>Кочурова Елена Сергеевна</td>
-                <td>Medium</td>
-                <td>Открытый</td>
-                <td>Нет решения</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td style="text-align: center;">1</td>
-                <td>Call центр</td>
-                <td>Перезвонить</td>
-                <td>17.09.2021</td>
-            </tr>    
-            <tr style="background-color: #ddebf7">
-                <td>ИТ-Поддержка</td>
-                <td><a href="#">TEL-853</a></td>
-                <td>Звонок Быстрых Юлии Сергеевне</td>
-                <td>Быстрых Юлия Сергеевна</td>
-                <td>Кочурова Елена Сергеевна</td>
-                <td>Medium</td>
-                <td>Открытый</td>
-                <td>Нет решения</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td>17.09.2021</td>
-                <td style="text-align: center;">1</td>
-                <td>Call центр</td>
-                <td>Перезвонить</td>
-                <td>17.09.2021</td>
-            </tr>    
-
-        </table>
+    <body class="jira">
+        #parse("/templates/report.vm")
     </body>
 </html>

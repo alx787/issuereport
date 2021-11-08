@@ -471,8 +471,7 @@ setupreport.module = (function () {
                 console.log(data);
 
                 /////////////////////////////////////////////////////////
-                var resultHtml = "<iframe>" + data + "</iframe>";
-                AJS.$("#demo-content").html(resultHtml);
+                AJS.$("#demo-content").html(data);
 
 
             },

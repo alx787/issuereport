@@ -43,7 +43,7 @@
                 <td style="text-align: center;">$reportline.exceedDays</td>
                 <td>$reportline.department</td>
                 <td>$reportline.labels</td>
-                <td>?</td>
+                <td>$reportline.resolutionDate</td>
             </tr>
         #end
 

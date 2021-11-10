@@ -11,7 +11,7 @@ import com.onresolve.scriptrunner.runner.customisers.WithPlugin
 
 IssueManager issueManager = ComponentAccessor.getIssueManager()
 
-// Замените PRJ-1 на ключ существующего issue.
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ PRJ-1 пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ issue.
 MutableIssue curIssue = issueManager.getIssueObject("DSDP-39")
 String result = curIssue.key + ": " + curIssue.summary
 
@@ -27,3 +27,13 @@ def slaFormatter = slaInformationService.durationFormatter
 def sla = slaInformationService.getInfo(user, query).results
 
 log.warn(sla)
+
+if (sla?.ongoingCycle?.present) {
+    // If there is an ongoing SLA. it takes the current ongoing SLA remaining time and format it as duration of "X hours Y minutes"
+    log.error("SLA remaining time: ${sla.ongoingCycle.get().remainingTime}")
+    slaFormatter.format(user, sla.ongoingCycle.get().remainingTime)
+} else {
+    // If there is no ongoing SLA, it takes last completed cycle remaining type and format it as duration of "X hours Y minutes"
+    log.error("SLA remaining time: ${sla?.completedCycles?.last()?.remainingTime}")
+    slaFormatter.format(user, sla?.completedCycles?.last()?.remainingTime)
+}

@@ -4,8 +4,12 @@ import com.atlassian.application.api.ApplicationManager;
 import com.atlassian.jira.application.ApplicationKeys;
 //import com.atlassian.application.api.ApplicationKey;
 import com.atlassian.application.api.Application;
+import com.atlassian.jira.config.properties.APKeys;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.servicedesk.api.sla.info.SlaInformation;
+import com.atlassian.servicedesk.api.sla.info.SlaInformationQuery;
+import com.atlassian.servicedesk.api.sla.info.SlaInformationService;
 import io.atlassian.fugue.Option;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
@@ -80,6 +84,7 @@ public class MailSender {
 //                reporter = userEmail;
 //            }
 //        }
+
 
         ApplicationManager appManager = ComponentAccessor.getComponent(ApplicationManager.class);
 
@@ -167,6 +172,16 @@ public class MailSender {
 //                def slaFormatter = slaInformationService.durationFormatter
 //                def sla = slaInformationService.getInfo(user, query).results
 
+                SlaInformationService slaInformationService = ComponentAccessor.getOSGiComponentInstanceOfType(SlaInformationService.class);
+
+                SlaInformationQuery query = slaInformationService.newInfoQueryBuilder().issue(oneIssue.getId()).build();
+                SlaInformationService.DurationFormatter slaFormatter = slaInformationService.getDurationFormatter();
+                List<SlaInformation> sla = slaInformationService.getInfo(authorUser, query).getResults();
+
+                log.warn("====== " + oneIssue.getKey());
+                log.warn(sla.toString());
+
+
                 reportData.setExecDate(""); // дата исполнения
                 reportData.setExceedDays(""); // количество дней просрочки
 
@@ -212,6 +227,7 @@ public class MailSender {
         Map params = new HashMap();
         params.put("reportdata", reportDataList);
         params.put("reportname", reportname);
+        params.put("home_url", ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL));
 //        params.put("summary", issue.getSummary());
 //        params.put("description", issue.getDescription());
 //        params.put("assignee", issue.getAssignee().getDisplayName());

@@ -109,7 +109,11 @@ public class MailSender {
             // описание
             reportData.setSummary(oneIssue.getSummary());
             // исполнитель
-            reportData.setAssignee(oneIssue.getAssignee().getDisplayName());
+            if (oneIssue.getAssignee() != null) {
+                reportData.setAssignee(oneIssue.getAssignee().getDisplayName());
+            } else {
+                reportData.setAssignee("");
+            }
             // автор
             reportData.setReporter(oneIssue.getReporter().getDisplayName());
 

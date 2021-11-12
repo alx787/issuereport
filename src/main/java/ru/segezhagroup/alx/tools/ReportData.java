@@ -1,5 +1,7 @@
 package ru.segezhagroup.alx.tools;
 
+import java.util.List;
+
 public class ReportData {
 
     private String issueNumber;
@@ -17,12 +19,13 @@ public class ReportData {
     private String department;
     private String labels;
     private String resolutionDate;
+    private List<String> slaInfo;
 
 
     public ReportData() {
     }
 
-    public ReportData(String issueNumber, String issueType, String summary, String assignee, String reporter, String priority, String status, String resolution, String createDate, String updateDate, String execDate, String exceedDays, String department, String labels, String resolutionDate) {
+    public ReportData(String issueNumber, String issueType, String summary, String assignee, String reporter, String priority, String status, String resolution, String createDate, String updateDate, String execDate, String exceedDays, String department, String labels, String resolutionDate, List<String> slaInfo) {
         this.issueNumber = issueNumber;
         this.issueType = issueType;
         this.summary = summary;
@@ -38,6 +41,7 @@ public class ReportData {
         this.department = department;
         this.labels = labels;
         this.resolutionDate = resolutionDate;
+        this.slaInfo = slaInfo;
     }
 
     public String getIssueNumber() {
@@ -158,5 +162,13 @@ public class ReportData {
 
     public void setResolutionDate(String resolutionDate) {
         this.resolutionDate = resolutionDate;
+    }
+
+    public List<String> getSlaInfo() {
+        return slaInfo;
+    }
+
+    public void setSlaInfo(List<String> slaInfo) {
+        this.slaInfo = slaInfo;
     }
 }

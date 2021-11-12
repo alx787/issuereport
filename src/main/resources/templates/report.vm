@@ -45,6 +45,19 @@
                 <td>$reportline.labels</td>
                 <td>$reportline.resolutionDate</td>
             </tr>
+
+            #if ($showslainfo)
+                <tr style="display: none">
+                    <td colspan="15" style="color: #0052cc; background-color: #FFFFFF;">
+                        #foreach( $sla in $reportline.slaInfo )
+                            <div>
+                                <span style="font-weight:bold">&gt;&gt;&gt;</span>
+                                $sla
+                            </div>
+                        #end
+                    </td>
+                </tr>
+            #end
         #end
 
 ##        <tr style="background-color: #ddebf7">

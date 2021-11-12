@@ -8,6 +8,7 @@ import com.atlassian.jira.config.properties.APKeys;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.servicedesk.api.sla.info.SlaInformation;
+import com.atlassian.servicedesk.api.sla.info.SlaInformationOngoingCycle;
 import com.atlassian.servicedesk.api.sla.info.SlaInformationQuery;
 import com.atlassian.servicedesk.api.sla.info.SlaInformationService;
 import io.atlassian.fugue.Option;
@@ -29,6 +30,9 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MailSender {
@@ -154,6 +158,9 @@ public class MailSender {
                 reportData.setUpdateDate("");
             }
 
+
+
+
             // эти параметры задач доступны только если на сервере установлен ServiceDesk
             if (jiraServiceDeskApplication.toString() == "none()") {
                 // SD не установлен
@@ -178,16 +185,74 @@ public class MailSender {
                 SlaInformationService.DurationFormatter slaFormatter = slaInformationService.getDurationFormatter();
                 List<SlaInformation> sla = slaInformationService.getInfo(authorUser, query).getResults();
 
-                log.warn("====== " + oneIssue.getKey());
-                log.warn(sla.toString());
+//                log.warn("====== " + oneIssue.getKey());
+//                log.warn(sla.toString());
+
+                // параметры sla будем сохранять отдельно
+                List<String> slaStringList = new ArrayList<>();
 
 
-                reportData.setExecDate(""); // дата исполнения
-                reportData.setExceedDays(""); // количество дней просрочки
+                // ищем sla с идентификатором 3
+
+//                SlaInformationImpl{
+//                    id=3,
+//                    name=Время до решения,
+//                    completedCycles=[],
+//                    ongoingCycle=Optional[
+//                            SlaInformationOngoingCycleImpl{
+//                                startTime=2021-11-06T14:13:51.674Z,
+//                                breachTime=Optional[2021-11-09T06:00:00Z],
+//                                breached=true,
+//                                paused=false,
+//                                withinCalendarHours=false,
+//                                goalDuration=28800000,
+//                                elapsedTime=115200000,
+//                                remainingTime=-86400000
+//                    }]
+//                }
+
+                // ищем параметры
+//                breachTime=Optional[2021-11-09T06:00:00Z],
+//                remainingTime=-86400000}
+
+
+                String execDate = "";
+                String exceedDays = "";
+
+
+                for (SlaInformation oneSla : sla) {
+                    slaStringList.add(oneSla.toString());
+
+                    if (oneSla.getId() == 3) {
+                        if (oneSla.getOngoingCycle().isPresent()) {
+                            SlaInformationOngoingCycle slaInfoOngCycle = oneSla.getOngoingCycle().get();
+                            long remainingTime = slaInfoOngCycle.getRemainingTime();
+
+                            exceedDays = String.valueOf(Math.round( (-1) * remainingTime / (60 * 60 * 24 * 1000)));
+
+                            if (slaInfoOngCycle.getBreachTime().isPresent()) {
+                                Instant breachTime = slaInfoOngCycle.getBreachTime().get();
+
+//                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZoneId.systemDefault());
+
+                                execDate = formatter.format(breachTime);
+                            }
+                        }
+                    }
+
+                }
+
+                reportData.setSlaInfo(slaStringList);
+
+
+
+
+                reportData.setExecDate(execDate); // дата исполнения
+                reportData.setExceedDays(exceedDays); // количество дней просрочки
 
 
             }
-
 
 
 
@@ -226,6 +291,7 @@ public class MailSender {
 
         Map params = new HashMap();
         params.put("reportdata", reportDataList);
+        params.put("showslainfo", true);
         params.put("reportname", reportname);
         params.put("home_url", ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL));
 //        params.put("summary", issue.getSummary());

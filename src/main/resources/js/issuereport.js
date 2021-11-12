@@ -157,6 +157,10 @@ setupreport.module = (function () {
             msg = msg +"<p>запрос</p>";
         }
 
+        if (AJS.$.trim(AJS.$("#editslaid").val()) == "") {
+            msg = msg +"<p>SLA</p>";
+        }
+
         if (AJS.$.trim(AJS.$("#editshedtime").val()) == "") {
             msg = msg + "<p>время</p>";
         }
@@ -203,10 +207,10 @@ setupreport.module = (function () {
                 AJS.$("#editmode").val("edit");
                 AJS.$("#tasknumber").val(taskId);
 
-
                 // заполнение всех полей
                 AJS.$("#editname").val(data.name);
                 AJS.$("#editfilterstring").val(data.filterstring);
+                AJS.$("#editslaid").val(data.slaid);
 
                 var toggle = document.getElementById('editisactive');
                 toggle.checked = data.active;
@@ -231,11 +235,7 @@ setupreport.module = (function () {
                     AJS.$('#receivers').append($('<option value="' + data.receivers[i].key + '">' + data.receivers[i].email + '</option>'));
                 }
 
-
                 AJS.dialog2("#task-edit-dialog").show();
-
-
-
 
                 // refreshDataInTable(data);
                 // if (data.status == "ok") {
@@ -280,6 +280,7 @@ setupreport.module = (function () {
         jsonObj.name =          AJS.$("#editname").val();
         jsonObj.filterstring =  AJS.$("#editfilterstring").val();
         jsonObj.shedtime =      AJS.$("#editshedtime").val();
+        jsonObj.slaid =     AJS.$("#editslaid").val();
 
         var toggle = document.getElementById('editisactive');
         jsonObj.active = toggle.checked;
@@ -509,6 +510,13 @@ AJS.$(document).ready(function() {
 
     // console.log("=========== проверка при загрузке ===========");
 
+
+    AJS.$("#button-save").on("click", function(e) {
+        e.preventDefault();
+        console.log("=========== проверка при загрузке ===========");
+    })
+
+
     // окно добавления отчета
     // открыть
     AJS.$("#button-add").click(function(e) {
@@ -525,6 +533,7 @@ AJS.$(document).ready(function() {
         // очистка всех полей
         AJS.$("#editname").val("");
         AJS.$("#editfilterstring").val("");
+        AJS.$("#editslaid").val("");
 
         var toggle = document.getElementById('editisactive');
         toggle.checked = false;

@@ -44,10 +44,11 @@ public interface ReportTask extends Entity {
 //    @Default("false")
     public void setIsActive(boolean isActive);
 
-
     public String getUserKey();
     public void setUserKey(String userKey);
 
+    public int getSlaId();
+    public void setSlaId(int slaId);
 
     @OneToMany
     public Receiver[] getReceivers();

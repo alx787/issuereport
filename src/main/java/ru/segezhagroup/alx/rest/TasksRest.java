@@ -115,6 +115,7 @@ public class TasksRest {
         jsonTaskObject.addProperty("active", reportTask.getIsActive());
 //        jsonTaskObject.addProperty("username", reportTask.getUserName());
         jsonTaskObject.addProperty("sheds", reportTask.getShedTime());
+        jsonTaskObject.addProperty("slaid", reportTask.getSlaId());
 
         ApplicationUser appUser = ComponentAccessor.getUserManager().getUserByKey(reportTask.getUserKey());
         if (appUser != null) {
@@ -185,13 +186,14 @@ public class TasksRest {
         String shedTime = jsonInput.get("shedtime").getAsString();
         Boolean active = jsonInput.get("active").getAsBoolean();
         String userKey = jsonInput.get("userkey").getAsString();
+        int slaId = jsonInput.get("slaid").getAsInt();
 
         // пользователи
         JsonArray jsonUserArray = jsonInput.get("receivers").getAsJsonArray();
 
 
         // создаем задачу
-        ReportTask reportTask = reportTaskDao.create(taskName, filterString, shedTime, active, userKey);
+        ReportTask reportTask = reportTaskDao.create(taskName, filterString, shedTime, active, userKey, slaId);
 
         if (reportTask == null) {
             return Response.ok("{\"status\":\"error\", \"description\":\"error creating task\"}").build();
@@ -246,6 +248,7 @@ public class TasksRest {
         Boolean active = jsonInput.get("active").getAsBoolean();
 //        String userName = jsonInput.get("username").getAsString();
         String userKey = jsonInput.get("userkey").getAsString();
+        int slaId = jsonInput.get("slaid").getAsInt();
 
         // пользователи
         JsonArray jsonUserArray = jsonInput.get("receivers").getAsJsonArray();
@@ -262,6 +265,7 @@ public class TasksRest {
         reportTask.setShedTime(shedTime);
         reportTask.setIsActive(active);
         reportTask.setUserKey(userKey);
+        reportTask.setSlaId(slaId);
 
         reportTaskDao.update(reportTask);
 

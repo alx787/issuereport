@@ -50,6 +50,11 @@
                     </div>
 
                     <div>
+                        <label for="editslaid">SLA</label>
+                        <input class="text large-field" id="editslaid" type="text" name="slaid">
+                    </div>
+
+                    <div>
                         <label for="editshedtime">Время</label>
                         <input class="text large-field" id="editshedtime" type="text" name="shedtime">
                     </div>
@@ -177,8 +182,8 @@
                 <div class="description">0 17 12 * * ? - ежедневно в 12.17</div>
             </div>
             <div class="buttons-container">
-                <div class="buttons">
-                    <a class="aui-button" style="background-color: #ebedf0" href="#">Сохранить</a>
+                <div class="aui-buttons">
+                     <button id="button-save" class="aui-button aui-button aui-button-primary">Сохранить</button>
                 </div>
             </div>
         </form>
@@ -191,7 +196,7 @@
 
 
             <div class="aui-buttons" style="margin: 16px 0 0 0;">
-                <button id="button-add" class="aui-button">Добавить отчет</button>
+                <button id="button-add" class="aui-button aui-button aui-button-primary">Добавить отчет</button>
             </div>
 
             <table id="reports-setup" class="aui">

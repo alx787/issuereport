@@ -34,7 +34,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
     }
 
     @Override
-    public ReportTask create(String name, String filterString, String shedTime, boolean isActive, String userName) {
+    public ReportTask create(String name, String filterString, String shedTime, boolean isActive, String userName, int slaId) {
 
 //        final ReportTask reportTask = ao.create(ReportTask.class,
 //                new DBParam("NAME", name),
@@ -49,6 +49,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
         reportTask.setShedTime(shedTime);
         reportTask.setIsActive(isActive);
         reportTask.setUserKey(userName);
+        reportTask.setSlaId(slaId);
         reportTask.save();
 
          reportTask.save();
@@ -64,6 +65,7 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
         rTask.setShedTime(reportTask.getShedTime());
         rTask.setIsActive(reportTask.getIsActive());
         rTask.setUserKey(reportTask.getUserKey());
+        rTask.setSlaId(reportTask.getSlaId());
         rTask.save();
     }
 

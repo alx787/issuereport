@@ -32,6 +32,9 @@
   <rest name="Reports Rest" i18n-name-key="reports-rest.name" key="reports-rest" path="/issuereport" version="1.0">
     <description key="reports-rest.description">The Reports Rest Plugin</description>
   </rest>
+  <rest name="Settings Rest" i18n-name-key="settings-rest.name" key="settings-rest" path="/issuereport" version="1.0">
+    <description key="settings-rest.description">The Reports Rest Plugin</description>
+  </rest>
   <rest name="Test Rest" i18n-name-key="test rest" key="test-rest" path="/issuereport" version="1.0">
     <description key="test-rest">The Test Rest Plugin</description>
   </rest>

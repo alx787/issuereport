@@ -107,6 +107,95 @@ setupreport.module = (function () {
 
     };
 
+
+    /////////////////////////////////////////////////////////
+    // получить значение расписания
+    // и заполнить его на странице
+    var fillSheduler = function () {
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/settings/get",
+            type: 'get',
+            dataType: 'json',
+            // data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                console.log(data);
+                //refreshDataInTable(data);
+                if (data.status == "error") {
+                    var myFlag = AJS.flag({
+                        type: 'error',
+                        body: data.descr,
+                    });
+                }
+
+                if (data.status == "ok") {
+                    AJS.$("#curr-shed").val(data.descr);
+                }
+
+                },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Ошибка обновления списка отчетов',
+                });
+
+            },
+        });
+
+        return true;
+    };
+
+
+    /////////////////////////////////////////////////////////
+    // получить значение расписания
+    // и заполнить его на странице
+    var saveSheduler = function () {
+
+        var jsonObj = {};
+        jsonObj.sheduler = AJS.$("#new-shed").val();
+
+
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/settings/save",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                console.log(data);
+                //refreshDataInTable(data);
+                if (data.status == "error") {
+                    var myFlag = AJS.flag({
+                        type: 'error',
+                        body: data.descr,
+                    });
+                }
+
+                if (data.status == "ok") {
+                    AJS.$("#new-shed").val("");
+                    AJS.$("#curr-shed").val(data.descr);
+                }
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Ошибка обновления списка отчетов',
+                });
+
+            },
+        });
+
+        return true;
+    }
+
+
     /////////////////////////////////////////////////////////
     // заполнение таблицы данными с сервера
     var fillTable = function () {
@@ -140,6 +229,8 @@ setupreport.module = (function () {
 
         return true;
     };
+
+
 
 
     /////////////////////////////////////////////////////////
@@ -494,6 +585,8 @@ setupreport.module = (function () {
     return {
         showMessage:showMessage,
         fillTable:fillTable,
+        fillSheduler:fillSheduler,
+        saveSheduler:saveSheduler,
         getBaseUrl:getBaseUrl,
         createReport:createReport,
         editReport:editReport,
@@ -513,8 +606,11 @@ AJS.$(document).ready(function() {
 
     AJS.$("#button-save").on("click", function(e) {
         e.preventDefault();
-        console.log("=========== проверка при загрузке ===========");
+        // console.log("=========== проверка при загрузке ===========");
+        setupreport.module.saveSheduler();
     })
+
+
 
 
     // окно добавления отчета
@@ -710,8 +806,8 @@ AJS.$(document).ready(function() {
     });
 
 
-
-
+    // восстановление значения при открытии
+    setupreport.module.fillSheduler();
     setupreport.module.fillTable();
 
 });

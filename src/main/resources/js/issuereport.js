@@ -133,6 +133,8 @@ setupreport.module = (function () {
 
                 if (data.status == "ok") {
                     AJS.$("#curr-shed").val(data.descr);
+                    AJS.$("#next-time").html("<aui-badge>следующее время выполнения: " + data.nextruntime + "</aui-badge>");
+
                 }
 
                 },
@@ -180,6 +182,7 @@ setupreport.module = (function () {
                 if (data.status == "ok") {
                     AJS.$("#new-shed").val("");
                     AJS.$("#curr-shed").val(data.descr);
+                    AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
                 }
 
             },
@@ -194,6 +197,7 @@ setupreport.module = (function () {
 
         return true;
     }
+
 
 
     /////////////////////////////////////////////////////////
@@ -610,6 +614,11 @@ AJS.$(document).ready(function() {
         setupreport.module.saveSheduler();
     })
 
+    // AJS.$("#button-test").on("click", function(e) {
+    //     e.preventDefault();
+    //     // console.log("=========== проверка при загрузке ===========");
+    //     setupreport.module.testSheduler();
+    // })
 
 
 

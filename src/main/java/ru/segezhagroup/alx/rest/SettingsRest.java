@@ -1,5 +1,6 @@
 package ru.segezhagroup.alx.rest;
 
+import com.atlassian.scheduler.config.Schedule;
 import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.SimpleDateFormat;
 
 @Path("/settings")
 public class SettingsRest {
@@ -65,8 +67,17 @@ public class SettingsRest {
             return Response.ok(gson.toJson(jsonOutput)).build();
         }
 
+
+//        String shedulerString = jsonElement.getAsString();
+//        log.warn("shed ");
+//        log.warn(shedulerString);
+//        log.warn(Schedule.forCronExpression(shedulerString).toString());
+
+
         JsonObject params = new JsonObject();
         params.addProperty("sheduler", jsonElement.getAsString());
+        params.addProperty("nextruntime", "");
+
 
         pluginSettingService.setConfigJson(params.toString());
 
@@ -103,12 +114,13 @@ public class SettingsRest {
         JsonObject jsonOutput = new JsonObject();
         jsonOutput.addProperty("status", "ok");
         jsonOutput.addProperty("descr", cfgObj.get("sheduler").getAsString());
+        jsonOutput.addProperty("nextruntime", cfgObj.get("nextruntime").getAsString());
 
         Gson gson = new Gson();
 
         return Response.ok(gson.toJson(jsonOutput)).build();
 
-
     }
+
 
 }

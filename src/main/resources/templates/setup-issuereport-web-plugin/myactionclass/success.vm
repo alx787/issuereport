@@ -173,6 +173,9 @@
             <div class="field-group" style="margin: 20px 0 0 0;">
                 <label for="curr-shed"></label>
                 <input class="text large-field" style="font-size: 22px;" type="text" id="curr-shed" name="curr-shed" value="0 17 12 * * ?" readonly>
+                <span id="next-time">
+##                    <aui-badge>19</aui-badge>
+                </span>
             </div>
 
             <div class="field-group">
@@ -183,7 +186,8 @@
             </div>
             <div class="buttons-container">
                 <div class="aui-buttons">
-                     <button id="button-save" class="aui-button aui-button aui-button-primary">Сохранить</button>
+##                    <button id="button-test" class="aui-button aui-button aui-button-primary">Тест</button>
+                    <button id="button-save" class="aui-button aui-button aui-button-primary">Сохранить</button>
                 </div>
             </div>
         </form>

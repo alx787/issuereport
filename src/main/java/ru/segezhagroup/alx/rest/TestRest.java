@@ -7,9 +7,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.segezhagroup.alx.ao.ReportTaskDao;
+import ru.segezhagroup.alx.tools.JobsProcedures;
 import ru.segezhagroup.alx.tools.MailSender;
 import ru.segezhagroup.alx.tools.QueryIssues;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,8 +24,15 @@ import java.util.List;
 public class TestRest {
 
     private static final Logger log = LoggerFactory.getLogger(TestRest.class);
+    private final ReportTaskDao reportTaskDao;
 
-//    @GET
+    @Inject
+    public TestRest(ReportTaskDao reportTaskDao) {
+        this.reportTaskDao = reportTaskDao;
+    }
+
+
+    //    @GET
 //    @Path("/testmail")
 //    public Response testMailSend() {
 //
@@ -56,6 +66,20 @@ public class TestRest {
         Gson gson = new Gson();
         return Response.ok(gson.toJson(jsonIssueArray)).build();
     }
+
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/testreport")
+    public Response testSendReport() {
+
+        JobsProcedures.ExecReporting(reportTaskDao);
+
+
+        return Response.ok("[]").build();
+
+    }
+
 
 
 }

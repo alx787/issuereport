@@ -34,6 +34,11 @@ public class ReportTaskDaoImpl implements ReportTaskDao {
     }
 
     @Override
+    public ReportTask[] findActive() {
+        return ao.find(ReportTask.class, Query.select().where("IS_ACTIVE = 1").order("ID ASC"));
+    }
+
+    @Override
     public ReportTask create(String name, String filterString, String shedTime, boolean isActive, String userName, int slaId) {
 
 //        final ReportTask reportTask = ao.create(ReportTask.class,

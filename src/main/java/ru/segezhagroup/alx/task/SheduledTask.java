@@ -68,9 +68,22 @@ public class SheduledTask implements JobRunner, InitializingBean, DisposableBean
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        String shedulerString = PluginSettingsServiceTools.getValueFromSettingsCfg(pluginSettingsService.getConfigJson(), "sheduler");
+        String shedulerString = null;
+        try {
+            shedulerString = PluginSettingsServiceTools.getValueFromSettingsCfg(pluginSettingsService.getConfigJson(), "sheduler");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (shedulerString == null || shedulerString.equals("")) {
             shedulerString = "0 0 8 * * ?"; // 8 утра каждый день по умолчанию
+
+            JsonObject params = new JsonObject();
+            params.addProperty("sheduler", shedulerString);
+            params.addProperty("nextruntime", "");
+
+            pluginSettingsService.setConfigJson(params.toString());
+
         }
 
         // примеры выражений крон

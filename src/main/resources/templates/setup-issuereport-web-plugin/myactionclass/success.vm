@@ -184,6 +184,15 @@
                 <input class="text large-field" type="text" id="new-shed" name="new-shed" placeholder="* * * * *">
                 <div class="description">0 17 12 * * ? - ежедневно в 12.17</div>
             </div>
+
+            <h3>Поле отчета "ДЗК"</h3>
+            <div class="field-group">
+                <label for="dzk-field">идентификатор поля дзк</label>
+                <input class="text large-field" type="text" id="dzk-field" name="dzk-field" placeholder="">
+##                <div class="description">идентификатор поля дзк</div>
+##                дзк 10608
+            </div>
+
             <div class="buttons-container">
                 <div class="aui-buttons">
 ##                    <button id="button-test" class="aui-button aui-button aui-button-primary">Тест</button>
@@ -191,6 +200,7 @@
                 </div>
             </div>
         </form>
+
 
 
 

@@ -29,6 +29,7 @@ public class SettingsRest {
     public Response saveSettings(String inputJson) {
 
 
+        // пустой параметр
         if (inputJson == null || inputJson.equals("")) {
             JsonObject jsonOutput = new JsonObject();
             jsonOutput.addProperty("status", "error");
@@ -44,6 +45,7 @@ public class SettingsRest {
         JsonParser parser = new JsonParser();
         JsonObject cfgObj = parser.parse(inputJson).getAsJsonObject();
 
+        // ничего не получили
         if (cfgObj == null) {
             JsonObject jsonOutput = new JsonObject();
             jsonOutput.addProperty("status", "error");
@@ -56,8 +58,9 @@ public class SettingsRest {
 
 
         // {"sheduler": "0 17 12 * * ?"}
-        JsonElement jsonElement = cfgObj.get("sheduler");
-        if ((jsonElement == null) || (jsonElement == JsonNull.INSTANCE)) {
+        JsonElement jsonElementSheduler = cfgObj.get("sheduler");
+        JsonElement jsonElementDzkFieldId = cfgObj.get("dzkfieldid");
+        if ((jsonElementSheduler == null) || (jsonElementSheduler == JsonNull.INSTANCE)) {
             JsonObject jsonOutput = new JsonObject();
             jsonOutput.addProperty("status", "error");
             jsonOutput.addProperty("descr", "параметр пустой");
@@ -73,9 +76,18 @@ public class SettingsRest {
 //        log.warn(shedulerString);
 //        log.warn(Schedule.forCronExpression(shedulerString).toString());
 
+        Long dkzFieldId = 0L;
+
+        try {
+            dkzFieldId = jsonElementDzkFieldId.getAsLong();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         JsonObject params = new JsonObject();
-        params.addProperty("sheduler", jsonElement.getAsString());
+        params.addProperty("sheduler", jsonElementSheduler.getAsString());
+        params.addProperty("dzkfieldid", dkzFieldId);
         params.addProperty("nextruntime", "");
 
 
@@ -83,7 +95,9 @@ public class SettingsRest {
 
         JsonObject jsonOutput = new JsonObject();
         jsonOutput.addProperty("status", "ok");
-        jsonOutput.addProperty("descr", jsonElement.getAsString());
+        jsonOutput.addProperty("sheduler", jsonElementSheduler.getAsString());
+        jsonOutput.addProperty("dzkfieldid", dkzFieldId);
+        jsonOutput.addProperty("nextruntime", "");
 
         Gson gson = new Gson();
 
@@ -100,7 +114,10 @@ public class SettingsRest {
         if (paramsString == null || paramsString.equals("")) {
             JsonObject jsonOutput = new JsonObject();
             jsonOutput.addProperty("status", "error");
-            jsonOutput.addProperty("descr", "ошибка чтения параметра сервера");
+//            jsonOutput.addProperty("descr", "ошибка чтения параметра сервера");
+            jsonOutput.addProperty("sheduler", "");
+            jsonOutput.addProperty("dzkfieldid", "");
+            jsonOutput.addProperty("nextruntime", "");
 
             Gson gson = new Gson();
 
@@ -113,8 +130,31 @@ public class SettingsRest {
 
         JsonObject jsonOutput = new JsonObject();
         jsonOutput.addProperty("status", "ok");
-        jsonOutput.addProperty("descr", cfgObj.get("sheduler").getAsString());
-        jsonOutput.addProperty("nextruntime", cfgObj.get("nextruntime").getAsString());
+
+        if (cfgObj.get("sheduler") != null) {
+            jsonOutput.addProperty("sheduler", cfgObj.get("sheduler").getAsString());
+        } else {
+            jsonOutput.addProperty("sheduler", "");
+        }
+
+        if (cfgObj.get("dzkfieldid") != null) {
+            jsonOutput.addProperty("dzkfieldid", cfgObj.get("dzkfieldid").getAsString());
+        } else {
+            jsonOutput.addProperty("dzkfieldid", "");
+
+        }
+
+        if (cfgObj.get("nextruntime") != null) {
+            jsonOutput.addProperty("nextruntime", cfgObj.get("nextruntime").getAsString());
+        } else {
+            jsonOutput.addProperty("nextruntime", "");
+
+        }
+
+
+//        jsonOutput.addProperty("sheduler", cfgObj.get("sheduler").getAsString());
+//        jsonOutput.addProperty("dzkfieldid", cfgObj.get("dzkfieldid").getAsString());
+//        jsonOutput.addProperty("nextruntime", cfgObj.get("nextruntime").getAsString());
 
         Gson gson = new Gson();
 

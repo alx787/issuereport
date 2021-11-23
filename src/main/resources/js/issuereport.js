@@ -129,12 +129,16 @@ setupreport.module = (function () {
                         type: 'error',
                         body: data.descr,
                     });
+
+                    AJS.$("#curr-shed").val("");
+                    AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
+                    AJS.$("#dzk-field").val("");
                 }
 
                 if (data.status == "ok") {
-                    AJS.$("#curr-shed").val(data.descr);
+                    AJS.$("#curr-shed").val(data.sheduler);
                     AJS.$("#next-time").html("<aui-badge>следующее время выполнения: " + data.nextruntime + "</aui-badge>");
-
+                    AJS.$("#dzk-field").val(data.dzkfieldid);
                 }
 
                 },
@@ -143,6 +147,10 @@ setupreport.module = (function () {
                     type: 'error',
                     body: 'Ошибка обновления списка отчетов',
                 });
+                AJS.$("#curr-shed").val("");
+                AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
+                AJS.$("#dzk-field").val("");
+
 
             },
         });
@@ -158,7 +166,7 @@ setupreport.module = (function () {
 
         var jsonObj = {};
         jsonObj.sheduler = AJS.$("#new-shed").val();
-
+        jsonObj.dzkfieldid = AJS.$("#dzk-field").val();
 
         AJS.$.ajax({
             url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/settings/save",
@@ -181,8 +189,9 @@ setupreport.module = (function () {
 
                 if (data.status == "ok") {
                     AJS.$("#new-shed").val("");
-                    AJS.$("#curr-shed").val(data.descr);
+                    AJS.$("#curr-shed").val(data.sheduler);
                     AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
+                    AJS.$("#dzk-field").val(data.dzkfieldid);
                 }
 
             },

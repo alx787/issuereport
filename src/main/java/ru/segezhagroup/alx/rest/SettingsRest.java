@@ -5,6 +5,7 @@ import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.segezhagroup.alx.settings.PluginSettingsService;
+import ru.segezhagroup.alx.settings.PluginSettingsServiceTools;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -25,85 +26,105 @@ public class SettingsRest {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    @Path("/save")
-    public Response saveSettings(String inputJson) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/savesheduler")
+    public Response saveSettingsSheduler(String inputJson) {
 
 
-        // пустой параметр
-        if (inputJson == null || inputJson.equals("")) {
+        String configJson = pluginSettingService.getConfigJson();
+
+        String sheduler = PluginSettingsServiceTools.getValueFromSettingsCfg(configJson, "sheduler");
+        if (sheduler.equals("")) {
+            sheduler = "0 0 8 * * ?"; // по умолчанию 8 часов каждый день
+        }
+
+        String textError = "";
+
+        if (inputJson != null) {
+            if (!inputJson.isEmpty()) {
+                // прочитаем параметр
+                JsonParser parser = new JsonParser();
+                JsonObject cfgObj = parser.parse(inputJson).getAsJsonObject();
+                if (cfgObj != null) {
+                    JsonElement jsonElementSheduler = cfgObj.get("sheduler");
+                    if ((jsonElementSheduler != null) && (jsonElementSheduler != JsonNull.INSTANCE)) {
+                        if (!jsonElementSheduler.getAsString().isEmpty()) {
+                            sheduler = jsonElementSheduler.getAsString();
+                        } else {
+                            textError = "пустой параметр";
+                        }
+                    } else {
+                        textError = "не заполненный параметр";
+                    }
+                } else {
+                    textError = "неправильный формат переменной";
+                }
+            } else {
+                textError = "пустой параметр";
+            }
+        } else {
+            textError = "нет параметра";
+        }
+
+
+        pluginSettingService.setConfigJson(PluginSettingsServiceTools.setValueFromSettingsCfg(configJson, "sheduler", sheduler));
+
+
+
+        // ошибка
+        if (!textError.equals("")) {
             JsonObject jsonOutput = new JsonObject();
             jsonOutput.addProperty("status", "error");
-            jsonOutput.addProperty("descr", "строка расписания не заполнена");
+            jsonOutput.addProperty("descr", textError + " значение установлено в " + sheduler);
 
             Gson gson = new Gson();
-
             return Response.ok(gson.toJson(jsonOutput)).build();
 
         }
 
-        // прочитаем параметр
+        return Response.ok("{\"status\":\"ok\", \"descr\":\"сохранено\"}").build();
+
+    }
+
+
+
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/savedzk")
+    public Response saveSettingsDzk(String inputJson) {
+
+
+        String configJson = pluginSettingService.getConfigJson();
+
+        String dzkfieldid = PluginSettingsServiceTools.getValueFromSettingsCfg(configJson, "dzkfieldid");
+        if (dzkfieldid.equals("")) {
+            dzkfieldid = "0"; // по умолчанию 0
+        }
+
+
         JsonParser parser = new JsonParser();
         JsonObject cfgObj = parser.parse(inputJson).getAsJsonObject();
 
-        // ничего не получили
-        if (cfgObj == null) {
-            JsonObject jsonOutput = new JsonObject();
-            jsonOutput.addProperty("status", "error");
-            jsonOutput.addProperty("descr", "ошибка чтения параметра переданного на сервере");
-
-            Gson gson = new Gson();
-
-            return Response.ok(gson.toJson(jsonOutput)).build();
-        }
-
-
-        // {"sheduler": "0 17 12 * * ?"}
-        JsonElement jsonElementSheduler = cfgObj.get("sheduler");
-        JsonElement jsonElementDzkFieldId = cfgObj.get("dzkfieldid");
-        if ((jsonElementSheduler == null) || (jsonElementSheduler == JsonNull.INSTANCE)) {
-            JsonObject jsonOutput = new JsonObject();
-            jsonOutput.addProperty("status", "error");
-            jsonOutput.addProperty("descr", "параметр пустой");
-
-            Gson gson = new Gson();
-
-            return Response.ok(gson.toJson(jsonOutput)).build();
-        }
-
-
-//        String shedulerString = jsonElement.getAsString();
-//        log.warn("shed ");
-//        log.warn(shedulerString);
-//        log.warn(Schedule.forCronExpression(shedulerString).toString());
-
-        Long dkzFieldId = 0L;
+        String textError = "";
 
         try {
-            dkzFieldId = jsonElementDzkFieldId.getAsLong();
+            dzkfieldid = cfgObj.get("dzkfieldid").getAsString();
         } catch (Exception e) {
             e.printStackTrace();
+            textError = e.getMessage();
         }
 
+        if (!textError.equals("")) {
+            return Response.ok("{\"status\":\"error\", \"descr\":\"" + textError + "\"}").build();
+        }
 
-        JsonObject params = new JsonObject();
-        params.addProperty("sheduler", jsonElementSheduler.getAsString());
-        params.addProperty("dzkfieldid", dkzFieldId);
-        params.addProperty("nextruntime", "");
+        pluginSettingService.setConfigJson(PluginSettingsServiceTools.setValueFromSettingsCfg(configJson, "dzkfieldid", dzkfieldid));
 
-
-        pluginSettingService.setConfigJson(params.toString());
-
-        JsonObject jsonOutput = new JsonObject();
-        jsonOutput.addProperty("status", "ok");
-        jsonOutput.addProperty("sheduler", jsonElementSheduler.getAsString());
-        jsonOutput.addProperty("dzkfieldid", dkzFieldId);
-        jsonOutput.addProperty("nextruntime", "");
-
-        Gson gson = new Gson();
-
-        return Response.ok(gson.toJson(jsonOutput)).build();
+        return Response.ok("{\"status\":\"ok\", \"descr\":\"сохранено\"}").build();
 
     }
+
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})

@@ -68,6 +68,9 @@ public class SheduledTask implements JobRunner, InitializingBean, DisposableBean
     @Override
     public void afterPropertiesSet() throws Exception {
 
+        String configJson = pluginSettingsService.getConfigJson();
+
+
         String shedulerString = null;
         try {
             shedulerString = PluginSettingsServiceTools.getValueFromSettingsCfg(pluginSettingsService.getConfigJson(), "sheduler");
@@ -78,11 +81,12 @@ public class SheduledTask implements JobRunner, InitializingBean, DisposableBean
         if (shedulerString == null || shedulerString.equals("")) {
             shedulerString = "0 0 8 * * ?"; // 8 утра каждый день по умолчанию
 
-            JsonObject params = new JsonObject();
-            params.addProperty("sheduler", shedulerString);
-            params.addProperty("nextruntime", "");
 
-            pluginSettingsService.setConfigJson(params.toString());
+            configJson = PluginSettingsServiceTools.setValueFromSettingsCfg(configJson, "sheduler", shedulerString);
+            configJson = PluginSettingsServiceTools.setValueFromSettingsCfg(configJson, "nextruntime", "");
+
+
+            pluginSettingsService.setConfigJson(configJson);
 
         }
 
@@ -114,12 +118,12 @@ public class SheduledTask implements JobRunner, InitializingBean, DisposableBean
             SimpleDateFormat formatDay = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
             // установим значение следующего времени запуска
-            JsonObject params = new JsonObject();
-            params.addProperty("sheduler", shedulerString);
-            params.addProperty("nextruntime", formatDay.format(scheduler.calculateNextRunTime(Schedule.forCronExpression(shedulerString))));
+            configJson = PluginSettingsServiceTools.setValueFromSettingsCfg(configJson, "sheduler", shedulerString);
+            configJson = PluginSettingsServiceTools.setValueFromSettingsCfg(configJson, "nextruntime", formatDay.format(scheduler.calculateNextRunTime(Schedule.forCronExpression(shedulerString))));
 
 
-            pluginSettingsService.setConfigJson(params.toString());
+            pluginSettingsService.setConfigJson(configJson);
+
 
         } catch (SchedulerServiceException e) {
             e.printStackTrace();

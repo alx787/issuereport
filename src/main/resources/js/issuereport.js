@@ -130,13 +130,13 @@ setupreport.module = (function () {
                         body: data.descr,
                     });
 
-                    AJS.$("#curr-shed").val("");
+                    AJS.$("#new-shed").val("");
                     AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
                     AJS.$("#dzk-field").val("");
                 }
 
                 if (data.status == "ok") {
-                    AJS.$("#curr-shed").val(data.sheduler);
+                    AJS.$("#new-shed").val(data.sheduler);
                     AJS.$("#next-time").html("<aui-badge>следующее время выполнения: " + data.nextruntime + "</aui-badge>");
                     AJS.$("#dzk-field").val(data.dzkfieldid);
                 }
@@ -160,16 +160,15 @@ setupreport.module = (function () {
 
 
     /////////////////////////////////////////////////////////
-    // получить значение расписания
-    // и заполнить его на странице
+    // сохранить значение расписания
     var saveSheduler = function () {
 
         var jsonObj = {};
         jsonObj.sheduler = AJS.$("#new-shed").val();
-        jsonObj.dzkfieldid = AJS.$("#dzk-field").val();
+        // jsonObj.dzkfieldid = AJS.$("#dzk-field").val();
 
         AJS.$.ajax({
-            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/settings/save",
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/settings/savesheduler",
             type: 'post',
             dataType: 'json',
             data: JSON.stringify(jsonObj),
@@ -188,10 +187,14 @@ setupreport.module = (function () {
                 }
 
                 if (data.status == "ok") {
-                    AJS.$("#new-shed").val("");
-                    AJS.$("#curr-shed").val(data.sheduler);
-                    AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
-                    AJS.$("#dzk-field").val(data.dzkfieldid);
+                    // AJS.$("#new-shed").val("");
+                    // AJS.$("#curr-shed").val(data.sheduler);
+                    // AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
+                    // AJS.$("#dzk-field").val(data.dzkfieldid);
+                    var myFlag = AJS.flag({
+                        type: 'success',
+                        body: 'Расписание планировщика сохранено',
+                    });
                 }
 
             },
@@ -206,6 +209,58 @@ setupreport.module = (function () {
 
         return true;
     }
+
+    /////////////////////////////////////////////////////////
+    // сохранить значение идентификатора поля дзк
+    var saveDzk = function () {
+
+        var jsonObj = {};
+        // jsonObj.sheduler = AJS.$("#new-shed").val();
+        jsonObj.dzkfieldid = AJS.$("#dzk-field").val();
+
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/settings/savedzk",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                console.log(data);
+                //refreshDataInTable(data);
+                if (data.status == "error") {
+                    var myFlag = AJS.flag({
+                        type: 'error',
+                        body: data.descr,
+                    });
+                }
+
+                if (data.status == "ok") {
+                    // AJS.$("#new-shed").val("");
+                    // AJS.$("#curr-shed").val(data.sheduler);
+                    // AJS.$("#next-time").html("<aui-badge>следующее время выполнения: </aui-badge>");
+                    // AJS.$("#dzk-field").val(data.dzkfieldid);
+                    var myFlag = AJS.flag({
+                        type: 'success',
+                        body: 'Идентификатор поля ДЗК сохранен',
+                    });
+                }
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Ошибка обновления списка отчетов',
+                });
+
+            },
+        });
+
+        return true;
+    }
+
 
 
 
@@ -600,6 +655,7 @@ setupreport.module = (function () {
         fillTable:fillTable,
         fillSheduler:fillSheduler,
         saveSheduler:saveSheduler,
+        saveDzk:saveDzk,
         getBaseUrl:getBaseUrl,
         createReport:createReport,
         editReport:editReport,
@@ -617,11 +673,18 @@ AJS.$(document).ready(function() {
     // console.log("=========== проверка при загрузке ===========");
 
 
-    AJS.$("#button-save").on("click", function(e) {
+    AJS.$("#button-sheduler-save").on("click", function(e) {
         e.preventDefault();
         // console.log("=========== проверка при загрузке ===========");
         setupreport.module.saveSheduler();
     })
+
+    AJS.$("#button-dzk-save").on("click", function(e) {
+        e.preventDefault();
+        // console.log("=========== проверка при загрузке ===========");
+        setupreport.module.saveDzk();
+    })
+
 
     // AJS.$("#button-test").on("click", function(e) {
     //     e.preventDefault();

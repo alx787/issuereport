@@ -160,6 +160,7 @@ public class ReportData {
         return resolutionDate;
     }
 
+
     public void setResolutionDate(String resolutionDate) {
         this.resolutionDate = resolutionDate;
     }

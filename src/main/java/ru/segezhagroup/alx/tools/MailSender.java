@@ -5,6 +5,8 @@ import com.atlassian.jira.application.ApplicationKeys;
 //import com.atlassian.application.api.ApplicationKey;
 import com.atlassian.application.api.Application;
 import com.atlassian.jira.config.properties.APKeys;
+import com.atlassian.jira.issue.customfields.option.LazyLoadedOption;
+import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.servicedesk.api.sla.info.SlaInformation;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -62,7 +65,25 @@ public class MailSender {
     }
 
 
-    public static String getReportText(String reportname, String userKey , List<Issue> issueList, boolean getMail) {
+    public static String getReportText(String reportname, String userKey , List<Issue> issueList, String strFieldId, boolean getMail) {
+
+
+        // получим объект пользовательского поля
+        Long lFieldId = 0L;
+
+
+        try {
+            lFieldId = Long.valueOf(strFieldId);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            lFieldId = 0L;
+        }
+
+        CustomField dzkCf = null;
+        if (lFieldId != 0L) {
+            dzkCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(lFieldId);
+        }
+
 
 
 //        CustomField userNameCf = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(10300L);
@@ -157,7 +178,6 @@ public class MailSender {
             } else {
                 reportData.setUpdateDate("");
             }
-
 
 
 
@@ -256,7 +276,19 @@ public class MailSender {
 
 
 
-            reportData.setDepartment("-"); // дзк
+
+
+            // поле дзк
+            String dzkName = "";
+            if (dzkCf != null) {
+                // для поля вида селектабл значение нужно получать через LazyLoadedOption
+                LazyLoadedOption lazyLoadedOption = (LazyLoadedOption)oneIssue.getCustomFieldValue(dzkCf);
+                if (lazyLoadedOption != null) {
+                    dzkName = lazyLoadedOption.getValue();
+                }
+            }
+
+            reportData.setDepartment(dzkName); // дзк
 
 
             // метки
@@ -289,11 +321,16 @@ public class MailSender {
         }
 
 
+
+
+
+
         Map params = new HashMap();
         params.put("reportdata", reportDataList);
         params.put("showslainfo", true);
         params.put("reportname", reportname);
         params.put("home_url", ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL));
+        params.put("reportdate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 //        params.put("summary", issue.getSummary());
 //        params.put("description", issue.getDescription());
 //        params.put("assignee", issue.getAssignee().getDisplayName());

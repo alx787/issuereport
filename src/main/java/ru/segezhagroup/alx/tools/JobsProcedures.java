@@ -16,7 +16,7 @@ public class JobsProcedures {
     private static final Logger log = LoggerFactory.getLogger(JobsProcedures.class);
 
 
-    public static void ExecReporting(ReportTaskDao reportTaskDao) {
+    public static void ExecReporting(ReportTaskDao reportTaskDao, String fieldId) {
         // здесь выполняется задача
         // 1 - нужно получить все активные задачи
         // 2 - проанализировать время, нужно ли выполнять задачу
@@ -51,7 +51,7 @@ public class JobsProcedures {
             String shedTime = oneTask.getShedTime();
 
             if (shedTime == null || shedTime.equals("")) {
-                JobsProcedures.ReportForTask(oneTask);
+                JobsProcedures.ReportForTask(oneTask, fieldId);
                 return;
             }
 
@@ -69,7 +69,7 @@ public class JobsProcedures {
 
                 if (taskHour != null) {
                     if (taskHour == currHour) {
-                        JobsProcedures.ReportForTask(oneTask);
+                        JobsProcedures.ReportForTask(oneTask, fieldId);
                         return;
                     }
                 }
@@ -79,7 +79,7 @@ public class JobsProcedures {
         }
     }
 
-    private static void ReportForTask(ReportTask reportTask) {
+    private static void ReportForTask(ReportTask reportTask, String fieldId) {
         Receiver[] receivers = reportTask.getReceivers();
 
         if (receivers.length == 0) {
@@ -87,10 +87,11 @@ public class JobsProcedures {
         }
 
 
-        // будем делать последовательно
+        // будем делать последовательно - получим список задач
         List<Issue> issueList = QueryIssues.getIssueFromJql(reportTask.getUserKey(), reportTask.getFilterString());
 
-        String mailText = MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, true);
+        // получим тело сообщения
+        String mailText = MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, fieldId, true);
 
         for (Receiver oneReceiver : receivers) {
 //            MailSender.sendEmail(oneReceiver.getUserEmail(), "JIRA - отчет по задачам", mailText);

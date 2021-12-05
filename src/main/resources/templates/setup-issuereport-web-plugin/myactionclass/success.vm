@@ -22,7 +22,7 @@
 ##    форма редактирования
 #############################################
 
-        <section id="task-edit-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" style="width: 640px;" role="dialog" aria-hidden="true">
+        <section id="task-edit-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" role="dialog" aria-hidden="true" style="width: 640px;">
             <header class="aui-dialog2-header">
                 <h2 class="aui-dialog2-header-main">Описание действия</h2>
                 <a class="aui-dialog2-header-close">

@@ -73,7 +73,7 @@ public class TestRest {
     @Path("/testreport")
     public Response testSendReport() {
 
-        JobsProcedures.ExecReporting(reportTaskDao);
+        JobsProcedures.ExecReporting(reportTaskDao, "10200");
 
 
         return Response.ok("[]").build();

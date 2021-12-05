@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.segezhagroup.alx.ao.ReportTask;
 import ru.segezhagroup.alx.ao.ReportTaskDao;
+import ru.segezhagroup.alx.settings.PluginSettingsService;
+import ru.segezhagroup.alx.settings.PluginSettingsServiceTools;
 import ru.segezhagroup.alx.tools.MailSender;
 import ru.segezhagroup.alx.tools.QueryIssues;
 
@@ -22,10 +24,12 @@ public class ReportsRest {
 
     private static final Logger log = LoggerFactory.getLogger(TasksRest.class);
     private final ReportTaskDao reportTaskDao;
+    private final PluginSettingsService pluginSettingService;
 
     @Inject
-    public ReportsRest(ReportTaskDao reportTaskDao) {
+    public ReportsRest(ReportTaskDao reportTaskDao, PluginSettingsService pluginSettingService) {
         this.reportTaskDao = reportTaskDao;
+        this.pluginSettingService = pluginSettingService;
     }
 
     @GET
@@ -54,7 +58,12 @@ public class ReportsRest {
         }
 
 
-        return Response.ok(MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, false)).build();
+        // получим параметр - ид поля дзк
+        String configJson = pluginSettingService.getConfigJson();
+        String dzkfieldid = PluginSettingsServiceTools.getValueFromSettingsCfg(configJson, "dzkfieldid");
+
+
+        return Response.ok(MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, dzkfieldid,false)).build();
 //        return Response.ok(MailSender.getReportText(issueList, true)).build();
     }
 

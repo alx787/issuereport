@@ -65,7 +65,7 @@ public class MailSender {
     }
 
 
-    public static String getReportText(String reportname, String userKey , List<Issue> issueList, String strFieldId, boolean getMail) {
+    public static String getReportText(String reportname, String userKey , List<Issue> issueList, String strFieldId, int slaId, boolean getMail) {
 
 
         // получим объект пользовательского поля
@@ -243,7 +243,8 @@ public class MailSender {
                 for (SlaInformation oneSla : sla) {
                     slaStringList.add(oneSla.toString());
 
-                    if (oneSla.getId() == 3) {
+                    // здесь будет определение sla
+                    if (oneSla.getId() == slaId) {
                         if (oneSla.getOngoingCycle().isPresent()) {
                             SlaInformationOngoingCycle slaInfoOngCycle = oneSla.getOngoingCycle().get();
                             long remainingTime = slaInfoOngCycle.getRemainingTime();

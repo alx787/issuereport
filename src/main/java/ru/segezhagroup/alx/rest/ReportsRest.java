@@ -63,7 +63,7 @@ public class ReportsRest {
         String dzkfieldid = PluginSettingsServiceTools.getValueFromSettingsCfg(configJson, "dzkfieldid");
 
 
-        return Response.ok(MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, dzkfieldid,false)).build();
+        return Response.ok(MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, dzkfieldid, reportTask.getSlaId(), false)).build();
 //        return Response.ok(MailSender.getReportText(issueList, true)).build();
     }
 

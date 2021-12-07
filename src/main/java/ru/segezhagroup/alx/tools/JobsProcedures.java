@@ -91,7 +91,7 @@ public class JobsProcedures {
         List<Issue> issueList = QueryIssues.getIssueFromJql(reportTask.getUserKey(), reportTask.getFilterString());
 
         // получим тело сообщения
-        String mailText = MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, fieldId, true);
+        String mailText = MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, fieldId, reportTask.getSlaId(), true);
 
         for (Receiver oneReceiver : receivers) {
 //            MailSender.sendEmail(oneReceiver.getUserEmail(), "JIRA - отчет по задачам", mailText);

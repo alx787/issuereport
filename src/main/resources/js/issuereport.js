@@ -891,4 +891,6 @@ AJS.$(document).ready(function() {
     setupreport.module.fillSheduler();
     setupreport.module.fillTable();
 
+    // отключить предупреждение при переходе на другую страницу
+    window.onbeforeunload = null;
 });

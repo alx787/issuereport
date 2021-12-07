@@ -53,9 +53,9 @@ public class SheduledTask implements JobRunner, InitializingBean, DisposableBean
 
 
         String configJson = pluginSettingsService.getConfigJson();
-        String dzkfieldid = PluginSettingsServiceTools.getValueFromSettingsCfg(configJson, "dzkfieldid");
+        String dzkfieldId = PluginSettingsServiceTools.getValueFromSettingsCfg(configJson, "dzkfieldid");
 
-        JobsProcedures.ExecReporting(reportTaskDao, dzkfieldid);
+        JobsProcedures.ExecReporting(reportTaskDao, dzkfieldId);
 
 
         return JobRunnerResponse.success();

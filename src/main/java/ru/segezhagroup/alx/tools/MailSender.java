@@ -52,6 +52,13 @@ public class MailSender {
 //    public static void sendEmail(String to, String subject, String body, String emailType) {
     public static void sendEmail(String to, String subject, String body) {
         SMTPMailServer mailServer = MailFactory.getServerManager().getDefaultSMTPMailServer();
+
+        // если почта не настроена то отправлять ничего не будем
+        if (mailServer.getDefaultFrom() == null) {
+            log.warn("В настройках не назначен отправитель (=null), сообщение не будет отправлено");
+            return;
+        }
+
         Email email = new Email(to);
         email.setFrom(mailServer.getDefaultFrom());
         email.setSubject(subject);
@@ -64,7 +71,8 @@ public class MailSender {
 //        log.warn(" ===== email was added to the queue =====");
     }
 
-
+    // сформировать отчет
+    // getMail - формировать с как документ html (для отправки письмом)
     public static String getReportText(String reportname, String userKey , List<Issue> issueList, String strFieldId, int slaId, boolean getMail) {
 
 

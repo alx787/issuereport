@@ -573,8 +573,43 @@ setupreport.module = (function () {
     /////////////////////////////////////////////////////////
     // отправить задачу с отчетом
     var sendmailReport = function () {
-        console.log(" ====== отправка отчета ====== ");
+        // console.log(" ====== отправка отчета ====== ");
+
+        var taskId = AJS.$("#sendmailnumber").val();
+
+        AJS.$.ajax({
+            url: setupreport.module.getBaseUrl() + "/rest/issuereport/1.0/reports/sendreport/" + taskId,
+            type: 'get',
+            dataType: 'text',
+            // data: JSON.stringify(jsonObj),
+            // async: false,
+            // async: true,
+            contentType: "application/text; charset=utf-8",
+            success: function(data) {
+
+                /////////////////////////////////////////////////////////
+                    var myFlag = AJS.flag({
+                        type: 'success',
+                        body: data,
+                        close: 'auto'
+                    });
+
+
+            },
+            error: function(data) {
+                var myFlag = AJS.flag({
+                    type: 'error',
+                    body: 'Произошла ошибка',
+                    close: 'auto'
+                });
+
+            },
+        });
+
         AJS.dialog2("#sendmail-dialog").hide();
+
+        return true;
+
     }
 
 
@@ -927,4 +962,21 @@ AJS.$(document).ready(function() {
 
     // отключить предупреждение при переходе на другую страницу
     window.onbeforeunload = null;
+
+    // подключить обработчики закрытия окна
+    // AJS.$(AJS.$("a.aui-dialog2-header-close")[3]).click(function(data) {console.log("123")});
+
+    // var arrDialogs = AJS.$("section.aui-dialog2");
+    // for (var i = 0; i < arrDialogs.length; i++) {
+    //     // идентификатор
+    //     var idDialog = arrDialogs[i].id;
+    //     // элемент крестик
+    //     var closerTag = AJS.$(arrDialogs[i]).find("a.aui-dialog2-header-close")[0];
+    //
+    //     AJS.$(closerTag).on("click", function(e) {
+    //         e.preventDefault();
+    //         AJS.dialog2("#" + idDialog).hide();
+    //     });
+    // }
+
 });

@@ -49,7 +49,7 @@ setupreport.module = (function () {
         + '<td headers="basic-view" style="cursor: pointer" onclick="setupreport.module.openDemo(__number__);">'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-screen">View</span>'
         + '</td>'
-        + '<td headers="basic-test" style="cursor: pointer">'
+        + '<td headers="basic-test" style="cursor: pointer" onclick="setupreport.module.showSendReportDialog(__number__);">'
         +     '<span class="aui-icon aui-icon-small aui-iconfont-email">Test</span>'
         + '</td>'
         + '<td headers="basic-del" style="cursor: pointer" onclick="setupreport.module.showDeleteDialog(__number__);"'
@@ -550,6 +550,14 @@ setupreport.module = (function () {
         createUpdateReport("edit");
     }
 
+    /////////////////////////////////////////////////////////
+    // выслать отчет самому себе
+    var showSendReportDialog = function (taskId) {
+        AJS.$("#sendmailnumber").val(taskId);
+        AJS.$("#sendmail-report").text("Отправить отчет " + taskId + " себе на почту ?");
+
+        AJS.dialog2("#sendmail-dialog").show();
+    }
 
     var showDeleteDialog = function (taskId) {
 
@@ -560,6 +568,15 @@ setupreport.module = (function () {
         AJS.dialog2("#delete-dialog").show();
 
     }
+
+
+    /////////////////////////////////////////////////////////
+    // отправить задачу с отчетом
+    var sendmailReport = function () {
+        console.log(" ====== отправка отчета ====== ");
+        AJS.dialog2("#sendmail-dialog").hide();
+    }
+
 
 
     /////////////////////////////////////////////////////////
@@ -628,7 +645,8 @@ setupreport.module = (function () {
             contentType: "application/html; charset=utf-8",
             success: function(data) {
 
-                console.log(data);
+                // html содержимое отчета
+                //console.log(data);
 
                 /////////////////////////////////////////////////////////
                 AJS.$("#demo-content").html(data);
@@ -663,6 +681,8 @@ setupreport.module = (function () {
         showDeleteDialog:showDeleteDialog,
         openDemo:openDemo,
         openReport:openReport,
+        showSendReportDialog:showSendReportDialog,
+        sendmailReport:sendmailReport,
     };
 }());
 
@@ -864,6 +884,20 @@ AJS.$(document).ready(function() {
             }
         }
     });
+
+
+    ///////////////////////////////////////////////////////
+    // события кнопок формы отправки почтой
+    AJS.$("#sendmail-dialog-confirm").on('click', function (e) {
+        e.preventDefault();
+        setupreport.module.sendmailReport();
+    });
+
+    AJS.$("#sendmail-dialog-cancel").on('click', function (e) {
+        e.preventDefault();
+        AJS.dialog2("#sendmail-dialog").hide();
+    });
+
 
 
     ///////////////////////////////////////////////////////

@@ -94,10 +94,10 @@ public class JobsProcedures {
         String mailText = MailSender.getReportText(reportTask.getName(), reportTask.getUserKey(), issueList, fieldId, reportTask.getSlaId(), true);
 
         for (Receiver oneReceiver : receivers) {
-//            MailSender.sendEmail(oneReceiver.getUserEmail(), "JIRA - отчет по задачам", mailText);
+            MailSender.sendEmail(oneReceiver.getUserEmail(), "JIRA - отчет по задачам", mailText);
 
-            log.warn("==================");
-            log.warn("send " + reportTask.getName() + " to " + oneReceiver.getUserEmail());
+//            log.warn("==================");
+//            log.warn("send " + reportTask.getName() + " to " + oneReceiver.getUserEmail());
 
         }
 

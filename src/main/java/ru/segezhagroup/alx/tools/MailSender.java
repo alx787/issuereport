@@ -61,7 +61,7 @@ public class MailSender {
         ComponentAccessor.getMailQueue().addItem(item);
 
 //        log.warn(emailType + " email was added to the queue ");
-        log.warn(" ===== email was added to the queue =====");
+//        log.warn(" ===== email was added to the queue =====");
     }
 
 

@@ -165,6 +165,37 @@
 #############################################
 
 
+#############################################
+## окно подтверждения отправки почтой
+#############################################
+        <section id="sendmail-dialog" class="aui-dialog2 aui-dialog2-small aui-layer" role="dialog" aria-hidden="true">
+            <header class="aui-dialog2-header">
+                <h2 class="aui-dialog2-header-main">Отправка отчета</h2>
+                <a class="aui-dialog2-header-close">
+                    <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>
+                </a>
+
+            </header>
+
+            <input id="sendmailnumber" type="hidden" name="sendmailnumber">
+
+            <div class="aui-dialog2-content">
+                <div id="sendmail-report">
+                    user1 user2 user3 .....
+                </div>
+            </div>
+            <footer class="aui-dialog2-footer">
+                <div class="aui-dialog2-footer-actions">
+                    <button id="sendmail-dialog-confirm" class="aui-button aui-button-primary">Отправить</button>
+                    <button id="sendmail-dialog-cancel" class="aui-button aui-button-link">Отмена</button>
+                </div>
+            </footer>
+        </section>
+#############################################
+
+
+
+
         <h2>Настройка отчетов</h2>
 
         <form class="aui">

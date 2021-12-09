@@ -54,6 +54,12 @@ public class MailSender {
         SMTPMailServer mailServer = MailFactory.getServerManager().getDefaultSMTPMailServer();
 
         // если почта не настроена то отправлять ничего не будем
+        if (mailServer == null) {
+            log.warn("Не настроена отправка почты (mailServer=null), сообщение не будет отправлено");
+            return;
+        }
+
+        // если почта не настроена то отправлять ничего не будем
         if (mailServer.getDefaultFrom() == null) {
             log.warn("В настройках не назначен отправитель (=null), сообщение не будет отправлено");
             return;

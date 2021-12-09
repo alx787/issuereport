@@ -964,6 +964,13 @@ AJS.$(document).ready(function() {
     window.onbeforeunload = null;
 
     // подключить обработчики закрытия окна
+    AJS.$("a.aui-dialog2-header-close").click(function (e) {
+        e.preventDefault();
+        AJS.dialog2("#" + AJS.$(this).parent().parent().attr("id")).hide();
+    });
+
+
+
     // AJS.$(AJS.$("a.aui-dialog2-header-close")[3]).click(function(data) {console.log("123")});
 
     // var arrDialogs = AJS.$("section.aui-dialog2");

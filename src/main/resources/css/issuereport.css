@@ -40,3 +40,8 @@
     border:2px solid #69899F;
     /*padding:5px;*/
 }
+
+/* указатель на крестик как на гиперссылку*/
+a.aui-dialog2-header-close {
+    cursor: pointer;
+}

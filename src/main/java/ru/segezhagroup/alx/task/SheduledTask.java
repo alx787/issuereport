@@ -74,6 +74,11 @@ public class SheduledTask implements JobRunner, InitializingBean, DisposableBean
 
         String configJson = pluginSettingsService.getConfigJson();
 
+        if ((configJson == null) || (configJson.equals(""))) {
+            configJson = "{\"sheduler\":\"0 0 8 * * ?\",\"dzkfieldid\":\"0\",\"nextruntime\":\"\"}";
+            pluginSettingsService.setConfigJson(configJson);
+        }
+
 
         String shedulerString = null;
         try {

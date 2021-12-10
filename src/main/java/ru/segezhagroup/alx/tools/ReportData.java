@@ -19,13 +19,14 @@ public class ReportData {
     private String department;
     private String labels;
     private String resolutionDate;
+    private String sdProjectId;
     private List<String> slaInfo;
 
 
     public ReportData() {
     }
 
-    public ReportData(String issueNumber, String issueType, String summary, String assignee, String reporter, String priority, String status, String resolution, String createDate, String updateDate, String execDate, String exceedDays, String department, String labels, String resolutionDate, List<String> slaInfo) {
+    public ReportData(String issueNumber, String issueType, String summary, String assignee, String reporter, String priority, String status, String resolution, String createDate, String updateDate, String execDate, String exceedDays, String department, String labels, String resolutionDate, String sdProjectId, List<String> slaInfo) {
         this.issueNumber = issueNumber;
         this.issueType = issueType;
         this.summary = summary;
@@ -41,6 +42,7 @@ public class ReportData {
         this.department = department;
         this.labels = labels;
         this.resolutionDate = resolutionDate;
+        this.sdProjectId = sdProjectId;
         this.slaInfo = slaInfo;
     }
 
@@ -160,9 +162,16 @@ public class ReportData {
         return resolutionDate;
     }
 
-
     public void setResolutionDate(String resolutionDate) {
         this.resolutionDate = resolutionDate;
+    }
+
+    public String getSdProjectId() {
+        return sdProjectId;
+    }
+
+    public void setSdProjectId(String sdProjectId) {
+        this.sdProjectId = sdProjectId;
     }
 
     public List<String> getSlaInfo() {

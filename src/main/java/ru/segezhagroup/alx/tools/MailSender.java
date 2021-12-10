@@ -9,6 +9,8 @@ import com.atlassian.jira.issue.customfields.option.LazyLoadedOption;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.servicedesk.api.ServiceDesk;
+import com.atlassian.servicedesk.api.ServiceDeskManager;
 import com.atlassian.servicedesk.api.sla.info.SlaInformation;
 import com.atlassian.servicedesk.api.sla.info.SlaInformationOngoingCycle;
 import com.atlassian.servicedesk.api.sla.info.SlaInformationQuery;
@@ -279,18 +281,16 @@ public class MailSender {
                 }
 
                 reportData.setSlaInfo(slaStringList);
-
-
-
-
                 reportData.setExecDate(execDate); // дата исполнения
                 reportData.setExceedDays(exceedDays); // количество дней просрочки
-
 
             }
 
 
-
+            // будет нужен serviceDeskProjectId для serviceDeskProject чтобы сгенерировать ссылку на задачу в customer portal
+            ServiceDeskManager serviceDeskManager = ComponentAccessor.getOSGiComponentInstanceOfType(ServiceDeskManager.class);
+            ServiceDesk serviceDesk = serviceDeskManager.getServiceDeskForProject(oneIssue.getProjectObject());
+            reportData.setSdProjectId(String.valueOf(serviceDesk.getProjectId()));
 
 
             // поле дзк

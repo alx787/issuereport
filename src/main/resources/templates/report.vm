@@ -31,7 +31,7 @@
             #end
                 <td>$reportline.issueType</td>
 ##                <td><a href="$home_url/browse/$reportline.issueNumber">$reportline.issueNumber</a></td>
-                <td><a href="$home_url/servicedesk/customer/portal/1/$reportline.issueNumber">$reportline.issueNumber</a></td>
+                <td><a href="$home_url/servicedesk/customer/portal/$reportline.sdProjectId/$reportline.issueNumber">$reportline.issueNumber</a></td>
                 <td>$reportline.summary</td>
                 <td>$reportline.assignee</td>
                 <td>$reportline.reporter</td>

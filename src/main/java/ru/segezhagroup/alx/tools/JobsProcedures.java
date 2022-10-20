@@ -52,7 +52,8 @@ public class JobsProcedures {
 
             if (shedTime == null || shedTime.equals("")) {
                 JobsProcedures.ReportForTask(oneTask, fieldId);
-                return;
+                // return;
+                continue;
             }
 
             String[] strings = shedTime.split(",");
@@ -70,7 +71,8 @@ public class JobsProcedures {
                 if (taskHour != null) {
                     if (taskHour == currHour) {
                         JobsProcedures.ReportForTask(oneTask, fieldId);
-                        return;
+                        // return;
+                        continue;
                     }
                 }
 

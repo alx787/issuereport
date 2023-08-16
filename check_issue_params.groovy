@@ -6,6 +6,7 @@ import com.atlassian.jira.event.type.EventDispatchOption
 import com.atlassian.jira.bc.issue.search.SearchService
 import com.atlassian.jira.issue.Issue
 import java.text.SimpleDateFormat
+import com.atlassian.jira.user.ApplicationUsers
 
 
 

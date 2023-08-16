@@ -4,7 +4,7 @@
     <table>
         <tr style="color: #ffffff; background-color: #5b9bd5">
             <th style="width: 80px">Тип задачи</th>
-            <th style="width: 60px">Код</th>
+            <th style="width: 100px">Код</th>
             <th style="width: 250px">Тема</th>
             <th style="width: 140px">Исполнитель</th>
             <th style="width: 140px">Автор</th>
@@ -30,8 +30,8 @@
                 <tr>
             #end
                 <td>$reportline.issueType</td>
-##                <td><a href="$home_url/browse/$reportline.issueNumber">$reportline.issueNumber</a></td>
-                <td><a href="$home_url/servicedesk/customer/portal/$reportline.sdProjectId/$reportline.issueNumber">$reportline.issueNumber</a></td>
+                <td><a href="$home_url/browse/$reportline.issueNumber">$reportline.issueNumber</a></td>
+##                <td><a href="$home_url/servicedesk/customer/portal/$reportline.sdProjectId/$reportline.issueNumber">$reportline.issueNumber</a></td>
                 <td>$reportline.summary</td>
                 <td>$reportline.assignee</td>
                 <td>$reportline.reporter</td>
